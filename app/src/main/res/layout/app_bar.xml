@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/app_bar_background"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left">
+        <ImageView
+            android:layout_width="60pt"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon_bar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:paddingRight="10dp">
+
+        <ImageButton
+            android:id="@+id/video"
+            android:layout_width="20pt"
+            android:layout_height="20pt"
+            android:src="@drawable/ic_videocam"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            android:clickable="false"/>
+
+        <ImageButton
+            android:id="@+id/phone"
+            android:layout_width="20pt"
+            android:layout_height="20pt"
+            android:src="@drawable/ic_phone"
+            android:visibility="gone"
+            android:clickable="false"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+
+</android.support.v7.widget.Toolbar>
