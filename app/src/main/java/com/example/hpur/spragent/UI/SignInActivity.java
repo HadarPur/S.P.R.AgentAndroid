@@ -122,6 +122,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
                 mResetView.startAnimation(aniFade);
                 mResetView.setVisibility(View.VISIBLE);
+                disableMainButtons();
             }
         });
 
@@ -132,6 +133,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mResetView.startAnimation(aniFade);
                 mResetView.setVisibility(View.INVISIBLE);
+                enableMainButtons();
             }
         });
 
@@ -284,12 +286,24 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         mProgressDialog.dismiss();
     }
 
+    private void disableMainButtons(){
+        this.mSignInBtn.setClickable(false);
+        this.mSignUpBtn.setClickable(false);
+        this.mPasswordResetBtn.setClickable(false);
+    }
+
+    private void enableMainButtons(){
+        this.mSignInBtn.setClickable(true);
+        this.mSignUpBtn.setClickable(true);
+        this.mPasswordResetBtn.setClickable(true);
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////// *************** firebase callbacks *************** ///////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void CheckUserCallback(boolean result) {
+    public void checkUserCallback(boolean result) {
         if (result) {
             mSharedPreferences.saveData(IS_FIRST_INSTALLATION, KEY);
             mSharedPreferences.saveData(this.mEmail, "Email");
@@ -306,7 +320,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     }
 
     @Override
-    public void CheckUserExistResetCallBack(boolean result) {
+    public void checkUserExistResetCallBack(boolean result) {
         hideProgressDialog();
         if (result) {
             mFirebaseAuth.sendPasswordResetEmail(mEmail)
@@ -322,6 +336,11 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         else {
             Toast.makeText(SignInActivity.this, "The user does not exist", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void checkAdminPasswordCallback(boolean result) {
+
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.hpur.spragent.Queries;
 
 public interface CheckUserCallback {
-    void CheckUserCallback(boolean result);
-    void CheckUserExistResetCallBack(boolean result);
+    void checkUserCallback(boolean result);
+    void checkUserExistResetCallBack(boolean result);
+    void checkAdminPasswordCallback(boolean result);
 }

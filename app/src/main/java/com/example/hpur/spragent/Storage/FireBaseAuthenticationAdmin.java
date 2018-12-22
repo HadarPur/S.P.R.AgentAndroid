@@ -8,50 +8,36 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Iterator;
 
-public class FireBaseAuthenticationAgents {
-
-    private final int RESET=0, SIGN=1;
+public class FireBaseAuthenticationAdmin {
     private DatabaseReference mRef;
 
     // c'tor
-    public FireBaseAuthenticationAgents() {
+    public FireBaseAuthenticationAdmin() {
         FirebaseDatabase data = FirebaseDatabase.getInstance();
-        this.mRef = data.getReference("Agents");
+        this.mRef = data.getReference("Admin");
     }
 
-    //write user into fire base
-    public void writeUserToDataBase(String uid, String email) {
-        this.mRef.child(uid).setValue(email);
-    }
-
-    // check if user exist
-    public void checkUser(final int type,final String email, final CheckUserCallback queryCallback) {
+    public void checkPassword(final String pass, final CheckUserCallback queryCallback) {
         this.mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean userExist = false;
+                boolean passwordMatch = false;
                 Iterator<DataSnapshot> itr = dataSnapshot.getChildren().iterator();
-                while(itr.hasNext()) {
-                    if (itr.next().getValue().equals(email)) {
-                        userExist = true;
+                while (itr.hasNext()) {
+                    if (itr.next().getValue().equals(pass)) {
+                        passwordMatch = true;
                         break;
                     }
                 }
 
-                switch (type) {
-                    case SIGN:
-                        queryCallback.checkUserCallback(userExist);
-                        break;
-                    case RESET:
-                        queryCallback.checkUserExistResetCallBack(userExist);
-                        break;
-                }
+                queryCallback.checkAdminPasswordCallback(passwordMatch);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
     }
-
 }
