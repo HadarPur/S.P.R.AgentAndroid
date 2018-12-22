@@ -91,13 +91,15 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         layout="@layout/reset_password_view"
+        android:visibility="invisible"
         android:layout_height="550dp"
         android:layout_width="350dp"/>
 
     <include
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        layout="@layout/admin_approval_pass"
+        layout="@layout/admin_approval_pass_view"
+        android:visibility="invisible"
         android:layout_height="380dp"
         android:layout_width="350dp"/>
 
