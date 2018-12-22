@@ -16,11 +16,12 @@ public class AboutUsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
+
+        findViews();
     }
 
     protected void onStart() {
         super.onStart();
-        findViews();
     }
 
     @Override
@@ -29,9 +30,11 @@ public class AboutUsActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-    //find view by id and set text
+    // find all views from xml by id
     public void findViews() {
         tv = findViewById(R.id.aboutus);
+        tv.setBackgroundColor(Color.argb(150, 255,255,255));
+
         tv.setText("S.P.R: Saving population at risk\n\n" +
                 "S.P.R main goal is to provide a simplified and easiest platform for youth at risk, who needs an immediate help, especially on late hours.\n\n" +
                 "In our app youth at risk can to chat with human agent volunteer who make a proper training, this agent will be personally assigned to him by artificial intelligence for maximum results.\n\n"+

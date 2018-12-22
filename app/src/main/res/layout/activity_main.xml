@@ -36,4 +36,16 @@
         android:textStyle="bold"
         android:layout_marginTop="20dp" />
 
+    <Button
+        android:id="@+id/signout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:text="Sign out"
+        android:textColor="#d7363e"
+        android:textSize="5pt"
+        android:background="@android:color/transparent"
+        android:gravity="center"/>
+
 </LinearLayout>

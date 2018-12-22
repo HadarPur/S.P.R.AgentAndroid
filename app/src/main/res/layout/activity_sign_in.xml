@@ -1,73 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:background="@drawable/spr_background"
     tools:context=".UI.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp">
-        <TextView
-            android:layout_width="60pt"
-            android:layout_height="18pt"
-            android:textSize="10pt"
-            android:textStyle="bold"
-            android:text="Email: "/>
-
-        <EditText
-            android:id="@+id/email"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="18pt"
-            android:textSize="7pt"
-            android:inputType="textEmailAddress"
-            android:hint="Enter email address" />
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp">
+            <TextView
+                android:layout_width="60pt"
+                android:layout_height="18pt"
+                android:textSize="10pt"
+                android:textStyle="bold"
+                android:text="Email: "/>
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="18pt"
+                android:textSize="7pt"
+                android:inputType="textEmailAddress"
+                android:hint="Enter email address" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp">
+            <TextView
+                android:layout_width="60pt"
+                android:layout_height="18pt"
+                android:textSize="10pt"
+                android:textStyle="bold"
+                android:text="Password: "/>
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="18pt"
+                android:textSize="7pt"
+                android:inputType="textPassword"
+                android:hint="Enter password" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/sign_in"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:textAllCaps="false"
+            android:textSize="8pt"
+            android:background="@android:color/transparent"
+            android:text="Sign in"/>
+
+        <Button
+            android:id="@+id/passwordreset"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:textAllCaps="false"
+            android:text="Forgot your password?"
+            android:textSize="5pt"
+            android:background="@android:color/transparent"
+            android:gravity="center"/>
+        <Button
+            android:id="@+id/signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Sign up now to S.P.R"
+            android:textColor="#d7363e"
+            android:textSize="5pt"
+            android:background="@android:color/transparent"
+            android:gravity="center"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp">
-        <TextView
-            android:layout_width="60pt"
-            android:layout_height="18pt"
-            android:textSize="10pt"
-            android:textStyle="bold"
-            android:text="Password: "/>
+    <include
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        layout="@layout/reset_password_view"
+        android:layout_height="550dp"
+        android:layout_width="350dp"/>
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="18pt"
-            android:textSize="7pt"
-            android:inputType="textPassword"
-            android:hint="Enter password" />
-    </LinearLayout>
+    <include
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        layout="@layout/admin_approval_pass"
+        android:layout_height="380dp"
+        android:layout_width="350dp"/>
 
-    <Button
-        android:id="@+id/sign_in"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:text="Sign in"/>
-
-    <Button
-        android:id="@+id/signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign up now to S.P.R"
-        android:textColor="#d7363e"
-        android:textSize="5pt"
-        android:background="@android:color/transparent"
-        android:gravity="center"/>
-
-</LinearLayout>
+</RelativeLayout>

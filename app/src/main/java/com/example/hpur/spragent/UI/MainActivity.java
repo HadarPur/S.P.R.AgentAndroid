@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.example.hpur.spragent.R;
+import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button mStartChat;
     private Button mAboutUs;
+    private Button mSignOut;
+    private SharedPreferencesStorage mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,14 @@ public class MainActivity extends AppCompatActivity {
     private void findViews() {
         this.mStartChat = findViewById(R.id.chat);
         this.mAboutUs = findViewById(R.id.about_us);
+        this.mSignOut = findViewById(R.id.signout);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     private void setupOnClick() {
@@ -42,6 +53,18 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+
+        this.mSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSharedPreferences.saveData("false", "SignedIn");
+
+                Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finish();
             }
         });
     }
