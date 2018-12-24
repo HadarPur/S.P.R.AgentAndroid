@@ -30,7 +30,7 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="18pt"
-                android:textSize="7pt"
+                android:textSize="6pt"
                 android:inputType="textEmailAddress"
                 android:hint="Enter email address" />
         </LinearLayout>
@@ -53,7 +53,7 @@
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="18pt"
-                android:textSize="7pt"
+                android:textSize="6pt"
                 android:gravity="left"
                 android:inputType="textPassword"
                 android:hint="Enter password" />
