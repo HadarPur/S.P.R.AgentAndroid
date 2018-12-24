@@ -5,6 +5,7 @@
     android:background="@drawable/border"
     android:orientation="vertical"
     android:gravity="center"
+    android:layoutDirection="ltr"
     android:id="@+id/adminview">
 
 
@@ -43,6 +44,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="40dp"
             android:inputType="textPassword"
+            android:gravity="left"
             android:hint="Enter password" />
 
 
