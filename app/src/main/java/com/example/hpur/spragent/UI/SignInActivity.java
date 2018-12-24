@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.hpur.spragent.Queries.CheckUserCallback;
 import com.example.hpur.spragent.R;
+import com.example.hpur.spragent.Storage.FireBaseAuthenticationAdmin;
 import com.example.hpur.spragent.Storage.FireBaseAuthenticationAgents;
 import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,12 +42,16 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     private String mPass;
     private ProgressDialog mProgressDialog;
     private FireBaseAuthenticationAgents mUsers;
+    private FireBaseAuthenticationAdmin mAdmin;
     private FirebaseUser mCurrentUser;
     private boolean mForgetPassword;
+    private boolean mAdminPasswordRequired;
+
     private EditText mEmailReset;
     private Button mGoBackBtn;
     private Button mResetBtn;
 
+    private EditText mAdminPassEditext;
     private Button mGoBackAdminBtn;
     private Button mAdminBtn;
 
@@ -67,9 +72,11 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         this.mProgressDialog.setCancelable(false);
 
         this.mUsers = new FireBaseAuthenticationAgents();
+        this.mAdmin = new FireBaseAuthenticationAdmin();
 
         this.mSharedPreferences = new SharedPreferencesStorage(getApplicationContext());
         this.mForgetPassword = false;
+        this.mAdminPasswordRequired = false;
 
         findViews();
         setupOnClick();
@@ -82,20 +89,24 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
 
     // find all views from xml by id
     private void findViews() {
+        // main view
         this.mSignInBtn = findViewById(R.id.sign_in);
         this.mSignUpBtn = findViewById(R.id.signup);
         this.mEmailEditText = findViewById(R.id.email);
         this.mPasswordEditText = findViewById(R.id.password);
         this.mPasswordResetBtn = findViewById(R.id.passwordreset);
 
+        // reset view
         this.mEmailReset = findViewById(R.id.emailreset);
         this.mGoBackBtn = findViewById(R.id.close);
         this.mResetBtn = findViewById(R.id.resetbtn);
         this.mResetView = findViewById(R.id.resetview);
 
+        // admin view
         this.mAdminView = findViewById(R.id.adminview);
         this.mGoBackAdminBtn = findViewById(R.id.closeadmin);
         this.mAdminBtn = findViewById(R.id.admin);
+        this.mAdminPassEditext = findViewById(R.id.adminpass);
 
         this.mEmailEditText.setText(mSharedPreferences.readData("Email"), TextView.BufferType.EDITABLE);
         this.mEmailReset.setText(mSharedPreferences.readData("Email"), TextView.BufferType.EDITABLE);
@@ -112,20 +123,28 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         this.mSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userSignUp();
+                mAdminPasswordRequired = true;
+                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+                mAdminView.startAnimation(aniFade);
+                mAdminView.setVisibility(View.VISIBLE);
+
+//                userSignUp();
             }
         });
+
         this.mPasswordResetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableMainButtons();
+
                 mForgetPassword = true;
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
                 mResetView.startAnimation(aniFade);
                 mResetView.setVisibility(View.VISIBLE);
-                disableMainButtons();
             }
         });
 
+        // reset
         this.mGoBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +152,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mResetView.startAnimation(aniFade);
                 mResetView.setVisibility(View.INVISIBLE);
+
                 enableMainButtons();
             }
         });
@@ -141,6 +161,26 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
             @Override
             public void onClick(View v) {
                 resetPassword();
+            }
+        });
+
+        // admin
+        this.mAdminBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        this.mGoBackAdminBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdminPasswordRequired = false;
+                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
+                mAdminView.startAnimation(aniFade);
+                mAdminView.setVisibility(View.INVISIBLE);
+
+                enableMainButtons();
             }
         });
     }
