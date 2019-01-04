@@ -16,7 +16,7 @@ public class FireBaseAuthenticationAgents {
     // c'tor
     public FireBaseAuthenticationAgents() {
         FirebaseDatabase data = FirebaseDatabase.getInstance();
-        this.mRef = data.getReference("Agents");
+        this.mRef = data.getReference("SPRApp").child("Agents");
     }
 
     //write user into fire base

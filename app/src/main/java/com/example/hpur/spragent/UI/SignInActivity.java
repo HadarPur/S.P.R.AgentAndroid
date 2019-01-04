@@ -190,8 +190,11 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         if (mForgetPassword) {
             mGoBackBtn.callOnClick();
         }
+        else if (mAdminPasswordRequired) {
+            mGoBackAdminBtn.callOnClick();
+        }
         else {
-            finish();
+            super.onBackPressed();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }

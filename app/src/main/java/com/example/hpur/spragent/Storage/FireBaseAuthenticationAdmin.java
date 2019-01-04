@@ -14,7 +14,7 @@ public class FireBaseAuthenticationAdmin {
     // c'tor
     public FireBaseAuthenticationAdmin() {
         FirebaseDatabase data = FirebaseDatabase.getInstance();
-        this.mRef = data.getReference("Admin");
+        this.mRef = data.getReference("SPRApp").child("Admin");
     }
 
     public void checkPassword(final String pass, final CheckUserCallback queryCallback) {
