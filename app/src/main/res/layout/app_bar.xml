@@ -16,8 +16,10 @@
             android:layout_width="15pt"
             android:layout_height="20pt"
             android:src="@drawable/ic_back"
+            android:visibility="gone"
             android:background="@android:color/transparent"
             android:clickable="false"/>
+
         <ImageView
             android:layout_width="60pt"
             android:layout_height="match_parent"

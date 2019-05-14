@@ -1,4 +1,4 @@
-package com.example.hpur.spragent.Queries;
+package com.example.hpur.spragent.Logic.Queries;
 
 public interface CheckUserCallback {
     void checkUserCallback(boolean result);

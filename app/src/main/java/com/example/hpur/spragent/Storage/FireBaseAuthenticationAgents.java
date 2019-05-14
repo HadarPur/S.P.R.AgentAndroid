@@ -1,6 +1,6 @@
 package com.example.hpur.spragent.Storage;
 
-import com.example.hpur.spragent.Queries.CheckUserCallback;
+import com.example.hpur.spragent.Logic.Queries.CheckUserCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

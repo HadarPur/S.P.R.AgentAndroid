@@ -14,11 +14,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.hpur.spragent.Queries.CheckUserCallback;
+import com.example.hpur.spragent.Logic.Queries.CheckUserCallback;
 import com.example.hpur.spragent.R;
 import com.example.hpur.spragent.Storage.FireBaseAuthenticationAdmin;
 import com.example.hpur.spragent.Storage.FireBaseAuthenticationAgents;
 import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
+import com.example.hpur.spragent.UI.Utils.UtilitiesFunc;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -40,10 +41,11 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     private FirebaseAuth mFirebaseAuth;
     private String mEmail;
     private String mPass;
-    private ProgressDialog mProgressDialog;
+
     private FireBaseAuthenticationAgents mUsers;
     private FireBaseAuthenticationAdmin mAdmin;
     private FirebaseUser mCurrentUser;
+
     private boolean mForgetPassword;
     private boolean mAdminPasswordRequired;
 
@@ -58,8 +60,16 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     private LinearLayout mResetView;
     private LinearLayout mAdminView;
 
+    private TextView mLoadingViewText;
+    private LinearLayout mLoadingView;
+
+    private UtilitiesFunc mUtils;
     private SharedPreferencesStorage mSharedPreferences;
 
+    private Button mAlertOkBtn;
+    private LinearLayout mAlertView;
+    private TextView mAlertTittle;
+    private TextView mAlertText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +78,11 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
 
         this.mFirebaseAuth = FirebaseAuth.getInstance();
 
-        this.mProgressDialog = new ProgressDialog(this);
-        this.mProgressDialog.setCancelable(false);
+        this.mUtils = new UtilitiesFunc();
 
         this.mUsers = new FireBaseAuthenticationAgents();
         this.mAdmin = new FireBaseAuthenticationAdmin();
+        this.mForgetPassword = false;
 
         this.mSharedPreferences = new SharedPreferencesStorage(getApplicationContext());
         this.mForgetPassword = false;
@@ -108,6 +118,14 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         this.mAdminBtn = findViewById(R.id.admin);
         this.mAdminPassEditext = findViewById(R.id.adminpass);
 
+        this.mAlertView = findViewById(R.id.alertview);
+        this.mAlertTittle = findViewById(R.id.alerttittle);
+        this.mAlertText = findViewById(R.id.msg);
+        this.mAlertOkBtn = findViewById(R.id.alert_def_btn);
+
+        this.mLoadingView = findViewById(R.id.loadingview);
+        this.mLoadingViewText = findViewById(R.id.progress_dialog_text);
+
         this.mEmailEditText.setText(mSharedPreferences.readData("Email"), TextView.BufferType.EDITABLE);
         this.mEmailReset.setText(mSharedPreferences.readData("Email"), TextView.BufferType.EDITABLE);
     }
@@ -123,24 +141,23 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         this.mSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdminPasswordRequired = true;
-                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
-                mAdminView.startAnimation(aniFade);
-                mAdminView.setVisibility(View.VISIBLE);
+//                mAdminPasswordRequired = true;
+//                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+//                mAdminView.startAnimation(aniFade);
+//                mAdminView.setVisibility(View.VISIBLE);
 
-//                userSignUp();
+                userSignUp();
             }
         });
 
         this.mPasswordResetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableMainButtons();
-
                 mForgetPassword = true;
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
                 mResetView.startAnimation(aniFade);
                 mResetView.setVisibility(View.VISIBLE);
+                disableMainButtons();
             }
         });
 
@@ -152,7 +169,6 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mResetView.startAnimation(aniFade);
                 mResetView.setVisibility(View.INVISIBLE);
-
                 enableMainButtons();
             }
         });
@@ -180,6 +196,16 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 mAdminView.startAnimation(aniFade);
                 mAdminView.setVisibility(View.INVISIBLE);
 
+                enableMainButtons();
+            }
+        });
+
+        this.mAlertOkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
+                mAlertView.startAnimation(aniFade);
+                mAlertView.setVisibility(View.INVISIBLE);
                 enableMainButtons();
             }
         });
@@ -255,44 +281,47 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
 
     // sign up a user to the app
     private void userSignUp() {
-        this.mEmail = this.mEmailEditText.getText().toString().trim();
-        this.mPass = this.mPasswordEditText.getText().toString().trim();
+//        this.mEmail = this.mEmailEditText.getText().toString().trim();
+//        this.mPass = this.mPasswordEditText.getText().toString().trim();
+//
+//
+//        if (TextUtils.isEmpty(this.mEmail)) {
+//            Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//
+//        if (TextUtils.isEmpty(this.mPass)) {
+//            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//
+//        if (this.mPass.length() <= 6) {
+//            Toast.makeText(this, "Password need to be at least 6 characters", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        showProgressDialog("Signing up, please wait...");
+//
+//        mFirebaseAuth.createUserWithEmailAndPassword(this.mEmail, this.mPass)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d(TAG, "createUserWithEmail:success");
+//                            sendEmailVerification();
+//
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+//                            Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                        hideProgressDialog();
+//                    }
+//                });
 
-
-        if (TextUtils.isEmpty(this.mEmail)) {
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(this.mPass)) {
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (this.mPass.length() <= 6) {
-            Toast.makeText(this, "Password need to be at least 6 characters", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        showProgressDialog("Signing up, please wait...");
-
-        mFirebaseAuth.createUserWithEmailAndPassword(this.mEmail, this.mPass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            sendEmailVerification();
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                        hideProgressDialog();
-                    }
-                });
+        startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     // after user signed up, email verification send
@@ -319,16 +348,37 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     }
 
     // show progress dialog
-    private void showProgressDialog(String message) {
-        mProgressDialog.setMessage(message);
-        mProgressDialog.show();
+    private void showProgressDialog(final String msg) {
+        this.mUtils.hideKeyboard(this);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mLoadingViewText.setText(msg);
+
+                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+                mLoadingView.startAnimation(aniFade);
+                mLoadingView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     // hide progress dialog
     private void hideProgressDialog() {
-        mProgressDialog.dismiss();
-    }
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
+                mLoadingView.startAnimation(aniFade);
+                mLoadingView.setVisibility(View.INVISIBLE);
+
+                mLoadingViewText.setText("");
+            }
+        });
+
+
+    }
     private void disableMainButtons(){
         this.mSignInBtn.setClickable(false);
         this.mSignUpBtn.setClickable(false);

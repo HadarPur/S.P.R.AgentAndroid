@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SPR Agent</string>
+    <string name="google_api">AIzaSyDQkp1Sh07b3cEKV2ZBdwog8mIUx8CaD2Q</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+
 </resources>
