@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
-        android:text="Agent"/>
+        android:text="Consumer"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,31 +32,31 @@
         android:layout_below="@+id/name"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:orientation="vertical"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="10dp">
-
-            <TextView
-                android:id="@+id/txt_msg"
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="150dp"
-                android:textColor="#000000" />
-        </FrameLayout>
+                android:background="@drawable/border"
+                android:orientation="vertical"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="10dp">
 
-        <View
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:background="@drawable/border"/>
-        <View
-            android:layout_width="5dp"
-            android:layout_height="5dp"
-            android:background="@drawable/border"/>
+                <TextView
+                    android:id="@+id/txt_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="150dp"
+                    android:textColor="#000000" />
+            </FrameLayout>
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/border"/>
+            <View
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:background="@drawable/border"/>
     </LinearLayout>
 </RelativeLayout>

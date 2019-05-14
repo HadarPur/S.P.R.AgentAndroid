@@ -2,12 +2,13 @@ package com.example.hpur.spragent.UI;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,12 +23,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
-import com.example.hpur.spragent.Logic.ChatBubble;
+import com.example.hpur.spr.Logic.ChatBubble;
 import com.example.hpur.spragent.Logic.ChatBubbleAdapter;
+import com.example.hpur.spragent.Logic.MessageType;
+import com.example.hpur.spragent.Logic.Queries.OnMapClickedCallback;
 import com.example.hpur.spragent.R;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,36 +38,29 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 import android.widget.ImageButton;
-import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-/*
-import com.opentok.android.Publisher;
-import com.opentok.android.PublisherKit;
-import com.opentok.android.Session;
-import com.opentok.android.Stream;
-import com.opentok.android.OpentokError;
-import com.opentok.android.Subscriber;
-*/
 
-public class MessagingActivity extends AppCompatActivity {//implements Session.SessionListener, PublisherKit.PublisherListener {
+
+public class MessagingActivity extends AppCompatActivity implements /*Session.SessionListener, PublisherKit.PublisherListener,*/ OnMapClickedCallback {
 
     private final String TAG = "MessagingActivity:";
     private final String AUDIO = "Audio";
     private final String VIDEO = "Video";
 
     // for tokbox session
-    private static final int RC_SETTINGS_SCREEN_PERM = 123;
-    private static final int RC_VIDEO_APP_PERM = 124;
-    private static String API_KEY = "46245052";
-    private static String SESSION_ID = "2_MX40NjI0NTA1Mn5-MTU0NjUxNjQyMTgwOX5WSy9yY3dQVk5oOTYzcWNVeDg2S3A1WHh-fg";
-    private static String TOKEN = "T1==cGFydG5lcl9pZD00NjI0NTA1MiZzaWc9MzZkYjExOWVhZmMyOWViMmJkNTU5ZjU4NmZkN2QzNmZkMmNjZTI0YzpzZXNzaW9uX2lkPTJfTVg0ME5qSTBOVEExTW41LU1UVTBOalV4TmpReU1UZ3dPWDVXU3k5eVkzZFFWazVvT1RZemNXTlZlRGcyUzNBMVdIaC1mZyZjcmVhdGVfdGltZT0xNTQ2NTE2NDYzJm5vbmNlPTAuNzcwOTA0NDc5MjE1ODY1NyZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTQ5MTA4NDc3JmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9";
-  //  private Session mSession;
+//    private static final int RC_SETTINGS_SCREEN_PERM = 123;
+//    private static final int RC_VIDEO_APP_PERM = 124;
+//    private static String API_KEY = "46245052";
+//    private static String SESSION_ID = "2_MX40NjI0NTA1Mn5-MTU0NjUxNjQyMTgwOX5WSy9yY3dQVk5oOTYzcWNVeDg2S3A1WHh-fg";
+//    private static String TOKEN = "T1==cGFydG5lcl9pZD00NjI0NTA1MiZzaWc9MzZkYjExOWVhZmMyOWViMmJkNTU5ZjU4NmZkN2QzNmZkMmNjZTI0YzpzZXNzaW9uX2lkPTJfTVg0ME5qSTBOVEExTW41LU1UVTBOalV4TmpReU1UZ3dPWDVXU3k5eVkzZFFWazVvT1RZemNXTlZlRGcyUzNBMVdIaC1mZyZjcmVhdGVfdGltZT0xNTQ2NTE2NDYzJm5vbmNlPTAuNzcwOTA0NDc5MjE1ODY1NyZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTQ5MTA4NDc3JmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9";
+//    private Session mSession;
 
     private enum mCallType { AUDIO ,VIDEO }
-    private boolean mMyMessage = true;
     private List<ChatBubble> mChatBubbles;
     private String mCallTypeName;
-    private String mUserName = "Agent";
+    private String mUserName = "AnonymousTeenager1";
+
+    private RelativeLayout mLoadingBack;
 
     private RecyclerView mRecycleView;
     private View mSendBtn;
@@ -90,9 +85,8 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
     private FrameLayout mPublisherViewContainer;
     private FrameLayout mSubscriberViewContainer;
 
-  //  private Publisher mPublisher;
-   // private Subscriber mSubscriber;
-
+//    private Publisher mPublisher;
+//    private Subscriber mSubscriber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +101,7 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
         findViews();
         setupOnClick();
 
-        this.mChatAdapter = new ChatBubbleAdapter(getApplicationContext(), R.layout.right_chat_bubble, mChatBubbles);
+        this.mChatAdapter = new ChatBubbleAdapter(getApplicationContext(), R.layout.right_chat_bubble, mChatBubbles, this);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         //Bind the RecycleView with the current application layout
         this.mRecycleView.setLayoutManager(layoutManager);
@@ -124,7 +118,7 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
                             @Override
                             public void run() {
                                 mRecycleView.smoothScrollToPosition(
-                                        mRecycleView.getAdapter().getItemCount() - 1);
+                                        mRecycleView.getAdapter().getItemCount());
                             }
                         }, 1);
                     }
@@ -139,7 +133,7 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    @AfterPermissionGranted(RC_VIDEO_APP_PERM)
+//    @AfterPermissionGranted(RC_VIDEO_APP_PERM)
     private void requestPermissions() {
 
         String[] perms = { Manifest.permission.INTERNET, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO };
@@ -156,28 +150,42 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
                 mVideoView.setVisibility(View.VISIBLE);
             }
 
-            // initialize and connect to the session
-          /*  mSession = new Session.Builder(this, API_KEY, SESSION_ID).build();
-            mSession.setSessionListener(this);
-            mSession.connect(TOKEN);
-           */
-
+//            // initialize and connect to the session
+//            mSession = new Session.Builder(this, API_KEY, SESSION_ID).build();
+//            mSession.setSessionListener(this);
+//            mSession.connect(TOKEN);
 
         } else {
-            EasyPermissions.requestPermissions(this, "This app needs access to your camera and mic to make video calls", RC_VIDEO_APP_PERM, perms);
+//            EasyPermissions.requestPermissions(this, "This app needs access to your camera and mic to make video calls", RC_VIDEO_APP_PERM, perms);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        attachDatabaseReadListener();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        attachDatabaseReadListener();
     }
 
     @Override
     protected void onPause(){
         super.onPause();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         mChatBubbles.clear();
+        mChatAdapter.notifyItemInserted(mChatBubbles.size());
         detachDatabaseReadListener();
     }
 
@@ -211,6 +219,9 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
         this.mVideo.setClickable(true);
 
         this.mBack.setVisibility(View.VISIBLE);
+
+        this.mLoadingBack = findViewById(R.id.load);
+        this.mLoadingBack.setBackgroundColor(Color.argb(200, 206,117,126));
 
         this.mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -262,7 +273,7 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
                     Toast.makeText(MessagingActivity.this, "Please input some text...", Toast.LENGTH_SHORT).show();
                 } else {
                     //add message to list
-                    ChatBubble chatBubble = new ChatBubble(mEditText.getText().toString(), mUserName, mMyMessage);
+                    ChatBubble chatBubble = new ChatBubble(mEditText.getText().toString(), mUserName, MessageType.USER_CHAT_MESSAGE);
                     mMessagesDatabaseReference.push().setValue(chatBubble);
                     mEditText.setText("");
                 }
@@ -310,10 +321,20 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
                     //chat bubble layout decision depends on the source of the message.
                     if (!(curBubbleMessage.getmUserName().equals(mUserName))) {
                         Log.d(TAG, "another user message");
-                        curBubbleMessage.setmMyMessage(false);
+                        if (curBubbleMessage.getmMapModel()!=null) {
+                            curBubbleMessage.setmMessageType(MessageType.OTHER_MAP_MESSAGE);
+                            mChatAdapter.setSupportFragmentManager(getSupportFragmentManager());
+                        }
+                        else
+                            curBubbleMessage.setmMessageType(MessageType.OTHER_CHAT_MESSAGE);
                     } else {
                         Log.d(TAG, "own user message");
-                        curBubbleMessage.setmMyMessage(true);
+                        if (curBubbleMessage.getmMapModel() != null) {
+                            curBubbleMessage.setmMessageType(MessageType.USER_MAP_MESSAGE);
+                            mChatAdapter.setSupportFragmentManager(getSupportFragmentManager());
+                        }
+                        else
+                            curBubbleMessage.setmMessageType(MessageType.USER_CHAT_MESSAGE);
                     }
                     //Add a new chatBubble(Message) into the list.
                     mChatBubbles.add(curBubbleMessage);
@@ -323,9 +344,10 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mRecycleView.smoothScrollToPosition(mChatBubbles.size()-1);
+                            mRecycleView.smoothScrollToPosition(mChatBubbles.size() - 1);
                         }
                     }, 1);
+
                 }
 
                 @Override
@@ -356,20 +378,6 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
 
     }
 
-    private void alertGotOut() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to leave the chat?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        MessagingActivity.super.onBackPressed();
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    }
-                }).create().show();
-    }
-
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -387,71 +395,81 @@ public class MessagingActivity extends AppCompatActivity {//implements Session.S
         this.mSendBtn.setClickable(false);
     }
 
-    // ***************************************************************** //
-    // **************** SessionListener methods tokbox ***************** //
-    // ***************************************************************** //
-/*
     @Override
-    public void onConnected(Session session) {
-        Log.i(TAG, "Session Connected");
-
-        mPublisher = new Publisher.Builder(this).build();
-        mPublisher.setPublisherListener(this);
-
-        mPublisherViewContainer.addView(mPublisher.getView());
-
-        mSession.publish(mPublisher);
-
+    public void onMapBubbleClicked(String lat, String lng) {
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
+//
+//    // ***************************************************************** //
+//    // **************** SessionListener methods tokbox ***************** //
+//    // ***************************************************************** //
+//
+//    @Override
+//    public void onConnected(Session session) {
+//        Log.i(TAG, "Session Connected");
+//
+//        mPublisher = new Publisher.Builder(this).build();
+//        mPublisher.setPublisherListener(this);
+//
+//        mPublisherViewContainer.addView(mPublisher.getView());
+//
+//        mSession.publish(mPublisher);
+//
+//    }
+//
+//    @Override
+//    public void onDisconnected(Session session) {
+//        Log.i(TAG, "Session Disconnected");
+//    }
+//
+//    @Override
+//    public void onStreamReceived(Session session, Stream stream) {
+//        Log.i(TAG, "Stream Received");
+//
+//        if (mSubscriber == null) {
+//            mSubscriber = new Subscriber.Builder(this, stream).build();
+//            mSession.subscribe(mSubscriber);
+//            mSubscriberViewContainer.addView(mSubscriber.getView());
+//        }
+//    }
+//
+//    @Override
+//    public void onStreamDropped(Session session, Stream stream) {
+//        Log.i(TAG, "Stream Dropped");
+//
+//        if (mSubscriber != null) {
+//            mSubscriber = null;
+//            mSubscriberViewContainer.removeAllViews();
+//        }
+//    }
+//
+//    @Override
+//    public void onError(Session session, OpentokError opentokError) {
+//        Log.e(TAG, "Session error: " + opentokError.getMessage());
+//    }
+//
+//    // ***************************************************************** //
+//    // *************** PublisherListener methods tokbox **************** //
+//    // ***************************************************************** //
+//
+//    @Override
+//    public void onStreamCreated(PublisherKit publisherKit, Stream stream) {
+//        Log.i(TAG, "Publisher onStreamCreated");
+//    }
+//
+//    @Override
+//    public void onStreamDestroyed(PublisherKit publisherKit, Stream stream) {
+//        Log.i(TAG, "Publisher onStreamDestroyed");
+//    }
+//
+//    @Override
+//    public void onError(PublisherKit publisherKit, OpentokError opentokError) {
+//        Log.e(TAG, "Publisher error: " + opentokError.getMessage());
+//    }
 
-    @Override
-    public void onDisconnected(Session session) {
-        Log.i(TAG, "Session Disconnected");
-    }
-
-    @Override
-    public void onStreamReceived(Session session, Stream stream) {
-        Log.i(TAG, "Stream Received");
-
-        if (mSubscriber == null) {
-            mSubscriber = new Subscriber.Builder(this, stream).build();
-            mSession.subscribe(mSubscriber);
-            mSubscriberViewContainer.addView(mSubscriber.getView());
-        }
-    }
-
-    @Override
-    public void onStreamDropped(Session session, Stream stream) {
-        Log.i(TAG, "Stream Dropped");
-
-        if (mSubscriber != null) {
-            mSubscriber = null;
-            mSubscriberViewContainer.removeAllViews();
-        }
-    }
-
-    @Override
-    public void onError(Session session, OpentokError opentokError) {
-        Log.e(TAG, "Session error: " + opentokError.getMessage());
-    }
-
-    // ***************************************************************** //
-    // *************** PublisherListener methods tokbox **************** //
-    // ***************************************************************** //
-
-    @Override
-    public void onStreamCreated(PublisherKit publisherKit, Stream stream) {
-        Log.i(TAG, "Publisher onStreamCreated");
-    }
-
-    @Override
-    public void onStreamDestroyed(PublisherKit publisherKit, Stream stream) {
-        Log.i(TAG, "Publisher onStreamDestroyed");
-    }
-
-    @Override
-    public void onError(PublisherKit publisherKit, OpentokError opentokError) {
-        Log.e(TAG, "Publisher error: " + opentokError.getMessage());
-    }
-*/
 }
+
+
