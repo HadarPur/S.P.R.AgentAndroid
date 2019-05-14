@@ -25,11 +25,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import com.example.hpur.spr.Logic.ChatBubble;
+import com.example.hpur.spragent.Logic.ChatBubble;
 import com.example.hpur.spragent.Logic.ChatBubbleAdapter;
 import com.example.hpur.spragent.Logic.MessageType;
 import com.example.hpur.spragent.Logic.Queries.OnMapClickedCallback;
 import com.example.hpur.spragent.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -68,6 +70,7 @@ public class MessagingActivity extends AppCompatActivity implements /*Session.Se
     private EditText mEditText;
     private ChatBubbleAdapter mChatAdapter;
 
+    private FirebaseUser currentFirebaseUser;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private ChildEventListener mChildEventListener;
@@ -93,9 +96,11 @@ public class MessagingActivity extends AppCompatActivity implements /*Session.Se
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
 
+        String teenagersName[] = {"Maor","Hadar","Zafrir","Nir","Shiran","Alfi"};
+        this.currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         this.mFirebaseDatabase = FirebaseDatabase.getInstance();
-        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp").child("Messages");
-
+        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages/some_agent_uid").child(teenagersName[1]);
+       // this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages").child("some_agent_uid");
         this.mChatBubbles = new ArrayList<>();
 
         findViews();

@@ -1,4 +1,4 @@
-package com.example.hpur.spr.Logic;
+package com.example.hpur.spragent.Logic;
 
 import com.example.hpur.spragent.Logic.MapModel;
 import com.example.hpur.spragent.Logic.MessageType;

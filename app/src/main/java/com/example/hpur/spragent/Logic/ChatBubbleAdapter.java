@@ -8,10 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.hpur.spragent.Logic.Queries.OnMapClickedCallback;
 import com.example.hpur.spragent.R;
-
 import java.util.List;
 
 //In charge to providing between the items and the underlying data
@@ -25,12 +23,12 @@ public class ChatBubbleAdapter extends RecyclerView.Adapter<ChatBubbleHolder> {
     private static final String TAG = "ChatBubbleAdapter:";
 
     private Context mContext;
-    private List<com.example.hpur.spr.Logic.ChatBubble> mChatBubbles;
+    private List<ChatBubble> mChatBubbles;
     private int mItemResource;
     private FragmentManager mFragment;
     private OnMapClickedCallback mOnMapClickedCallback;
 
-    public ChatBubbleAdapter(Context context, int resource, List<com.example.hpur.spr.Logic.ChatBubble> chatBubbles, OnMapClickedCallback onMapClickedCallback) {
+    public ChatBubbleAdapter(Context context, int resource, List<ChatBubble> chatBubbles, OnMapClickedCallback onMapClickedCallback) {
         this.mContext = context;
         this.mChatBubbles = chatBubbles;
         this.mItemResource = resource;
@@ -69,7 +67,7 @@ public class ChatBubbleAdapter extends RecyclerView.Adapter<ChatBubbleHolder> {
     @Override
     public void onBindViewHolder(@NonNull ChatBubbleHolder chatBubbleHolder, int position) {
         Log.d(TAG,"onBindViewHolder");
-        com.example.hpur.spr.Logic.ChatBubble chatBubble = this.mChatBubbles.get(position);
+        ChatBubble chatBubble = this.mChatBubbles.get(position);
         chatBubbleHolder.bindChatBubble(chatBubble, mOnMapClickedCallback);
     }
 

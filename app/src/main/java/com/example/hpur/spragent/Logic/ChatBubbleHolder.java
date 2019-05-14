@@ -25,7 +25,7 @@ public class ChatBubbleHolder extends RecyclerView.ViewHolder {
     private static final int USER_MAP = 2;
     private static final int OTHER_MAP = 3;
     private Context mContext;
-    private com.example.hpur.spr.Logic.ChatBubble mChatBubble;
+    private ChatBubble mChatBubble;
     private FragmentManager mFragment;
     private SpinKitView mProgressBar = null;
 
@@ -47,7 +47,7 @@ public class ChatBubbleHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public void bindChatBubble(com.example.hpur.spr.Logic.ChatBubble chatBubble, final OnMapClickedCallback callback){
+    public void bindChatBubble(ChatBubble chatBubble, final OnMapClickedCallback callback){
         this.mChatBubble = chatBubble;
         if (mChatBubble.getmMapModel() != null) {
             mProgressBar.setVisibility(View.VISIBLE);
