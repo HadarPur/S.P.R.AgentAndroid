@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+
+    android:background="@drawable/simple_background"
+    android:orientation="vertical" >
+
+    <include layout="@layout/app_bar"
+        android:id="@+id/tool_bar"/>
+
+    <include
+        layout="@layout/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_below="@+id/tool_bar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar">
+
+        <RelativeLayout
+            android:id="@+id/users_chat_list_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:padding="10dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/users_chat_list_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/msg_type"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentTop="false"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:divider="@null"
+                android:listSelector="@android:color/transparent"
+                android:transcriptMode="alwaysScroll" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <include
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        layout="@layout/audio_view"
+        android:layout_height="550dp"
+        android:visibility="invisible"
+        android:layout_width="350dp"/>
+
+    <include
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        layout="@layout/video_view"
+        android:layout_height="550dp"
+        android:visibility="invisible"
+        android:layout_width="350dp"/>
+
+</RelativeLayout>

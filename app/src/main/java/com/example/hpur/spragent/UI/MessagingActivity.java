@@ -96,10 +96,11 @@ public class MessagingActivity extends AppCompatActivity implements /*Session.Se
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
 
+        Intent intent = getIntent();
         String teenagersName[] = {"Maor","Hadar","Zafrir","Nir","Shiran","Alfi"};
         this.currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         this.mFirebaseDatabase = FirebaseDatabase.getInstance();
-        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages/some_agent_uid").child(teenagersName[1]);
+        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages/some_agent_uid").child(intent.getStringExtra("UID"));
        // this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages").child("some_agent_uid");
         this.mChatBubbles = new ArrayList<>();
 
@@ -116,7 +117,7 @@ public class MessagingActivity extends AppCompatActivity implements /*Session.Se
             mRecycleView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @Override
                 public void onLayoutChange(View v,
-                                           int left, int top, int right, int bottom,
+                                           int left, int tachtop, int right, int bottom,
                                            int oldLeft, int oldTop, int oldRight, int oldBottom) {
                     if (bottom < oldBottom) {
                         mRecycleView.postDelayed(new Runnable() {
