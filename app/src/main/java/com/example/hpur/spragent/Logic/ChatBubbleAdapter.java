@@ -2,13 +2,12 @@ package com.example.hpur.spragent.Logic;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.hpur.spragent.Logic.Queries.OnMapClickedCallback;
+import com.example.hpur.spragent.Logic.Queries.OnMessageModelClickedCallback;
 import com.example.hpur.spragent.R;
 import java.util.List;
 
@@ -20,15 +19,17 @@ public class ChatBubbleAdapter extends RecyclerView.Adapter<ChatBubbleHolder> {
     private static final int OTHER_MESSAGE = 1;
     private static final int USER_MAP = 2;
     private static final int OTHER_MAP = 3;
+    private static final int USER_IMAGE = 4;
+    private static final int OTHER_IMAGE = 5;
+
     private static final String TAG = "ChatBubbleAdapter:";
 
     private Context mContext;
     private List<ChatBubble> mChatBubbles;
     private int mItemResource;
-    private FragmentManager mFragment;
-    private OnMapClickedCallback mOnMapClickedCallback;
+    private OnMessageModelClickedCallback mOnMapClickedCallback;
 
-    public ChatBubbleAdapter(Context context, int resource, List<ChatBubble> chatBubbles, OnMapClickedCallback onMapClickedCallback) {
+    public ChatBubbleAdapter(Context context, int resource, List<ChatBubble> chatBubbles, OnMessageModelClickedCallback onMapClickedCallback) {
         this.mContext = context;
         this.mChatBubbles = chatBubbles;
         this.mItemResource = resource;
@@ -52,13 +53,19 @@ public class ChatBubbleAdapter extends RecyclerView.Adapter<ChatBubbleHolder> {
             case OTHER_MAP:
                 mItemResource = R.layout.left_map_bubble;
                 break;
+            case USER_IMAGE:
+                mItemResource = R.layout.right_image_bubble;
+                break;
+            case OTHER_IMAGE:
+                mItemResource = R.layout.left_image_bubble;
+                break;
             default:
                 Log.d(TAG, "view type is not expected.. error at getItemViewType() ");
         }
 
         View view = LayoutInflater.from(parent.getContext()).inflate(mItemResource, parent, false);
 
-        return new ChatBubbleHolder(getSupportedFragment() ,this.mContext, view, viewType);
+        return new ChatBubbleHolder(this.mContext, view, viewType);
     }
 
     //onBindViewHolder purpose:
@@ -80,14 +87,4 @@ public class ChatBubbleAdapter extends RecyclerView.Adapter<ChatBubbleHolder> {
     public int getItemViewType(int position) {
         return this.mChatBubbles.get(position).getmMessageType().ordinal();
     }
-
-    public void setSupportFragmentManager(FragmentManager fragment) {
-        this.mFragment = fragment;
-    }
-
-    public FragmentManager getSupportedFragment() {
-        return this.mFragment;
-    }
-
-
 }

@@ -1,6 +1,11 @@
 package com.example.hpur.spragent.UI;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         findViews();
         initNavigationDrawer();
         setupOnClick();
+
+        if(!isNetworkAvailable(this)) {
+            showConnectionInternetFailed();
+        }
     }
 
     private void findViews() {
@@ -130,4 +139,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         return super.onOptionsItemSelected(item);
     }
+
+    //check network connection
+    private static boolean isNetworkAvailable(Context ctx) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if ((connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null
+                && connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED)
+                || (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null
+                && connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    //alert network not available
+    private void showConnectionInternetFailed() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Network Connection Failed");
+        alertDialog.setMessage("Network is not enabled." +
+                "\n"+
+                "If you want to use this app you need a connection to the network");
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                finish();
+            }
+        });
+        alertDialog.show();
+    }
+
 }

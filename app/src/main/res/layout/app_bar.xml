@@ -33,6 +33,24 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/add_report"
+            android:layout_width="20pt"
+            android:layout_height="20pt"
+            android:src="@drawable/ic_add_circle"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            android:clickable="false"/>
+
+        <ImageButton
+            android:id="@+id/info"
+            android:layout_width="20pt"
+            android:layout_height="20pt"
+            android:src="@drawable/ic_info"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            android:clickable="false"/>
+
+        <ImageButton
             android:id="@+id/video"
             android:layout_width="20pt"
             android:layout_height="20pt"

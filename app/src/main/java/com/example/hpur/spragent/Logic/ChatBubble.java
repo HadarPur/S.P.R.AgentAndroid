@@ -1,14 +1,12 @@
 package com.example.hpur.spragent.Logic;
 
-import com.example.hpur.spragent.Logic.MapModel;
-import com.example.hpur.spragent.Logic.MessageType;
-
 public class ChatBubble  {
 
     private String mTextMessage;
     private String mUserName;
     private MessageType mMessageType;
     private MapModel mMapModel;
+    private ImageModel mImageModel;
 
     public ChatBubble(){ }
 
@@ -22,6 +20,13 @@ public class ChatBubble  {
         this.mUserName = mUserName;
         this.mMessageType = mMessageType;
         this.mMapModel = mMapModel;
+        this.mTextMessage = "";
+    }
+
+    public ChatBubble(ImageModel mImageModel, String mUserName, MessageType mMessageType) {
+        this.mUserName = mUserName;
+        this.mMessageType = mMessageType;
+        this.mImageModel = mImageModel;
         this.mTextMessage = "";
     }
 
@@ -57,4 +62,11 @@ public class ChatBubble  {
         this.mUserName = mUserName;
     }
 
+    public ImageModel getmImageModel() {
+        return mImageModel;
+    }
+
+    public void setmImageModel(ImageModel mImageModel) {
+        this.mImageModel = mImageModel;
+    }
 }

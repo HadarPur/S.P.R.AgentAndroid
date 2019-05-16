@@ -69,17 +69,16 @@
     <include
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        layout="@layout/audio_view"
+        layout="@layout/report_view"
+        android:visibility="gone"
         android:layout_height="550dp"
-        android:visibility="invisible"
         android:layout_width="350dp"/>
 
     <include
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        layout="@layout/video_view"
+        layout="@layout/report_enter_view"
+        android:visibility="gone"
         android:layout_height="550dp"
-        android:visibility="invisible"
         android:layout_width="350dp"/>
-
 </RelativeLayout>

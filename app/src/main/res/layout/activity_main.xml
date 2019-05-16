@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_button"
                 android:fontFamily="serif"
-                android:text="Start chat"
+                android:text="Chat list"
                 android:textColor="@android:color/white"
                 android:textSize="20dp"
                 android:textStyle="bold"
