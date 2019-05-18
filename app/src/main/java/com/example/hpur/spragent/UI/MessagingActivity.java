@@ -126,8 +126,14 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
     }
 
     public void onBackPressed(){
-        super.onBackPressed();
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        if (mAddReport.getVisibility() == View.VISIBLE){
+            mAddReport.setVisibility(View.GONE);
+        } else if (mInfoReport.getVisibility() == View.VISIBLE){
+            mInfoReport.setVisibility(View.GONE);
+        }else {
+            super.onBackPressed();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        }
     }
 
     private void findViews(){
