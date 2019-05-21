@@ -1,5 +1,9 @@
 package com.example.hpur.spragent.Logic;
 
+import com.example.hpur.spragent.Logic.Models.ImageModel;
+import com.example.hpur.spragent.Logic.Models.MapModel;
+import com.example.hpur.spragent.Logic.Types.MessageType;
+
 public class ChatBubble  {
 
     private String mTextMessage;

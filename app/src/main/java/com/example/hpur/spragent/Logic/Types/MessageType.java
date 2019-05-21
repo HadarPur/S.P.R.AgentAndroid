@@ -1,4 +1,4 @@
-package com.example.hpur.spragent.Logic;
+package com.example.hpur.spragent.Logic.Types;
 
 public enum MessageType {
     USER_CHAT_MESSAGE,

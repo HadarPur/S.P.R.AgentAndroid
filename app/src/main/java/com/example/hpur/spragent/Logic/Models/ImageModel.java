@@ -1,4 +1,4 @@
-package com.example.hpur.spragent.Logic;
+package com.example.hpur.spragent.Logic.Models;
 
 public class ImageModel {
 

@@ -103,6 +103,25 @@
             android:layout_marginBottom="50dp"
             android:gravity="center"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center">
+        <Switch
+            android:id="@+id/simpleSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="switch"
+            android:layout_centerHorizontal="true"
+            android:textOn="On"
+            android:textOff="Off"
+            android:textColor="@color/colorAccent"
+            android:gravity="center"
+            android:padding="30dp"/>
+
+        </LinearLayout>
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

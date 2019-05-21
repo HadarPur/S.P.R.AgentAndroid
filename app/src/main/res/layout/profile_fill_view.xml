@@ -5,12 +5,12 @@
     android:orientation="vertical"
     android:layoutDirection="ltr"
     android:gravity="center"
-    android:id="@+id/signupview">
+    android:id="@+id/form_view">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/relLayout2"
+        android:id="@+id/form_view1"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
@@ -37,12 +37,14 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingRight="30dp"
+                android:paddingBottom="30dp"
                 android:paddingLeft="30dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/fname"
@@ -53,27 +55,19 @@
                     android:background="@drawable/edittext_border"
                     android:inputType="text"
                     android:hint="First Name" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="30dp"
-                android:paddingLeft="30dp"
-                android:paddingBottom="30dp"
-                android:paddingTop="30dp"
-                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/lname"
                     android:layout_width="match_parent"
                     android:layout_height="18pt"
                     android:textSize="6pt"
+                    android:layout_marginTop="20dp"
                     android:paddingLeft="20dp"
                     android:background="@drawable/edittext_border"
                     android:inputType="text"
                     android:hint="Last Name" />
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,8 +88,7 @@
                         android:id="@+id/radio_male"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Male"
-                        android:checked="true" />
+                        android:text="Male" />
 
                     <RadioButton
                         android:id="@+id/radio_female"
@@ -133,48 +126,46 @@
                 android:paddingBottom="30dp"
                 android:orientation="vertical">
 
-                <RadioGroup
-                    android:id="@+id/radio_sector"
+                <com.example.hpur.spragent.UI.Views.ToggleButtonGroupTableLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <RadioButton
-                        android:id="@+id/radio_jewish"
-                        android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/radio_sector">
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Jewish"
-                        android:checked="true" />
+                        android:gravity="center_horizontal">
+                        <RadioButton
+                            android:id="@+id/radio_jewish"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Jewish" />
 
 
-                    <RadioButton
-                        android:id="@+id/radio_christian"
-                        android:layout_width="wrap_content"
+                        <RadioButton
+                            android:id="@+id/radio_christian"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Christian" />
+
+                        <RadioButton
+                            android:id="@+id/radio_moslem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Moslem" />
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Christian" />
-
-                    <RadioButton
-                        android:id="@+id/radio_moslem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Moslem" />
-
-                </RadioGroup>
-
-                <RadioGroup
-                    android:id="@+id/radio_sector2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <RadioButton
-                        android:id="@+id/radio_unknown"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Undecided" />
-                </RadioGroup>
+                        android:gravity="center_horizontal">
+                        <RadioButton
+                            android:id="@+id/radio_unknown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Undecided" />
+                    </TableRow>
+                </com.example.hpur.spragent.UI.Views.ToggleButtonGroupTableLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -204,69 +195,67 @@
                 android:paddingRight="30dp"
                 android:paddingLeft="30dp"
                 android:paddingBottom="30dp"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
-                <RadioGroup
-                    android:id="@+id/radio_gender"
+                <com.example.hpur.spragent.UI.Views.ToggleButtonGroupTableLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <RadioButton
-                        android:id="@+id/radio_straight"
-                        android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/radio_gender">
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Straight"
-                        android:checked="true" />
+                        android:gravity="center_horizontal">
+                        <RadioButton
+                            android:id="@+id/radio_straight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Straight" />
 
+                        <RadioButton
+                            android:id="@+id/radio_homosexual"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Homosexual" />
 
-                    <RadioButton
-                        android:id="@+id/radio_homosexual"
-                        android:layout_width="wrap_content"
+                        <RadioButton
+                            android:id="@+id/radio_lesbian"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lesbian" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Homosexual" />
+                        android:gravity="center_horizontal">
+                        <RadioButton
+                            android:id="@+id/radio_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bisexual" />
 
-                    <RadioButton
-                        android:id="@+id/radio_lesbian"
-                        android:layout_width="wrap_content"
+                        <RadioButton
+                            android:id="@+id/radio_trans"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transgender" />
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Lesbian" />
+                        android:gravity="center_horizontal">
+                        <RadioButton
+                            android:id="@+id/radio_unknown2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Undecided" />
+                    </TableRow>
+                </com.example.hpur.spragent.UI.Views.ToggleButtonGroupTableLayout>
 
-                </RadioGroup>
-
-                <RadioGroup
-                    android:id="@+id/radio_gender_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <RadioButton
-                        android:id="@+id/radio_b"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bisexual" />
-
-                    <RadioButton
-                        android:id="@+id/radio_trans"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Transgender" />
-                </RadioGroup>
-                <RadioGroup
-                    android:id="@+id/radio_gender_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <RadioButton
-                        android:id="@+id/radio_unknown2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Undecided" />
-                </RadioGroup>
             </LinearLayout>
         </LinearLayout>
 

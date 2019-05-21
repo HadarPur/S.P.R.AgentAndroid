@@ -1,5 +1,8 @@
 package com.example.hpur.spragent.Storage;
 
+import android.content.Context;
+
+import com.example.hpur.spragent.Logic.Models.AgentModel;
 import com.example.hpur.spragent.Logic.Queries.CheckUserCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,19 +23,22 @@ public class FireBaseAuthenticationAgents {
     }
 
     //write user into fire base
-    public void writeUserToDataBase(String uid, String email) {
-        this.mRef.child(uid).setValue(email);
+    public void writeUserToDataBase(String uid, AgentModel agent) {
+        this.mRef.child(uid).setValue(agent);
     }
 
     // check if user exist
-    public void checkUser(final int type,final String email, final CheckUserCallback queryCallback) {
+    public void checkUser(final Context ctx, final int type, final String email, final CheckUserCallback queryCallback) {
         this.mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean userExist = false;
                 Iterator<DataSnapshot> itr = dataSnapshot.getChildren().iterator();
                 while(itr.hasNext()) {
-                    if (itr.next().getValue().equals(email)) {
+                    AgentModel agent = itr.next().getValue(AgentModel.class);
+
+                    if (agent.getEmail().equals(email)) {
+                        agent.saveLocalObj(ctx);
                         userExist = true;
                         break;
                     }
