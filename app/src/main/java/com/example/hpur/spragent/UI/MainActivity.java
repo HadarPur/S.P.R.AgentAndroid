@@ -22,9 +22,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.hpur.spragent.Logic.Types.AvailabilityType;
 import com.example.hpur.spragent.R;
+import com.example.hpur.spragent.Storage.FireBaseAvailableAgents;
 import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferencesStorage mSharedPreferences;
     private ActionBarDrawerToggle mToggle;
     private DrawerLayout mDrawerLayout;
+    private Switch mAvailable;
+    private FireBaseAvailableAgents mAvailableRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         this.mSharedPreferences = new SharedPreferencesStorage(getApplicationContext());
+        this.mAvailableRef = new FireBaseAvailableAgents();
 
         findViews();
         initNavigationDrawer();
@@ -79,11 +86,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void findViews() {
+        this.mAvailable = findViewById(R.id.availability); // initiate Switch
+
         this.mStartChat = findViewById(R.id.chat);
         this.mAboutUs = findViewById(R.id.about_us);
         this.mSignOut = findViewById(R.id.signout);
 
         this.mDrawerLayout = findViewById(R.id.activity_main);
+
+        setAvailability();
+    }
+
+    private void setAvailability() {
+        String available = mSharedPreferences.readData("Available");
+        if (available.equals("") || available.equals("false")) {
+            this.mAvailable.setChecked(false);
+            this.mAvailable.setText("Off");
+        }
+        else {
+            this.mAvailable.setChecked(true);
+            this.mAvailable.setText("On");
+        }
     }
 
     @Override
@@ -96,6 +119,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.mStartChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String available = mSharedPreferences.readData("Available");
+
+                if (available.equals("") || available.equals("false")) {
+                    Toast.makeText(MainActivity.this, "You are not available", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Intent intent = new Intent(MainActivity.this, UsersChatListActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -114,12 +144,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String uid = mSharedPreferences.readData("UID");
+
                 mSharedPreferences.saveData("false", "SignedIn");
+                mSharedPreferences.saveData("false", "Available");
+                mAvailableRef.setAvailability(uid,AvailabilityType.OFF);
 
                 Intent intent = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
+            }
+        });
+
+        this.mAvailable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String uid = mSharedPreferences.readData("UID");
+                if (isChecked) {
+                    mAvailable.setText("On");
+                    mSharedPreferences.saveData("true", "Available");
+                    mAvailableRef.setAvailability(uid,AvailabilityType.ON);
+                }
+                else {
+                    mAvailable.setText("Off");
+                    mSharedPreferences.saveData("false", "Available");
+                    mAvailableRef.setAvailability(uid,AvailabilityType.OFF);
+                }
             }
         });
     }

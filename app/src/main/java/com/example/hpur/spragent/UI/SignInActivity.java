@@ -367,6 +367,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
             mSharedPreferences.saveData(IS_FIRST_INSTALLATION, KEY);
             mSharedPreferences.saveData(this.mEmail, "Email");
             mSharedPreferences.saveData("true", "SignedIn");
+            mSharedPreferences.saveData(mFirebaseAuth.getCurrentUser().getUid(), "UID");
 
             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
             startActivity(intent);
