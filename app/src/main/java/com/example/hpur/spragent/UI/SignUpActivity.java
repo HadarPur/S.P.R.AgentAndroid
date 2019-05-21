@@ -209,7 +209,8 @@ public class SignUpActivity extends AppCompatActivity {
         this.mAlertOkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
     }
