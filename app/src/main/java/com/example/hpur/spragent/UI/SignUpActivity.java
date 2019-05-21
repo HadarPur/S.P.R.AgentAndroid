@@ -111,8 +111,16 @@ public class SignUpActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        if (this.mFormView.getVisibility() == View.VISIBLE) {
+            this.mFormView.setVisibility(View.INVISIBLE);
+
+            Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+            this.mDetailsView.startAnimation(aniFade);
+            this.mDetailsView.setVisibility(View.VISIBLE);
+        } else {
+            super.onBackPressed();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        }
     }
 
     // find all views from xml by id
@@ -156,8 +164,7 @@ public class SignUpActivity extends AppCompatActivity {
         this.mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                onBackPressed();
             }
         });
 

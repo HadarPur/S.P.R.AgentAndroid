@@ -52,6 +52,7 @@
                     android:layout_height="18pt"
                     android:textSize="6pt"
                     android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:background="@drawable/edittext_border"
                     android:inputType="text"
                     android:hint="First Name" />
@@ -63,6 +64,7 @@
                     android:textSize="6pt"
                     android:layout_marginTop="20dp"
                     android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:background="@drawable/edittext_border"
                     android:inputType="text"
                     android:hint="Last Name" />
@@ -113,6 +115,7 @@
                     android:layout_height="18pt"
                     android:textSize="6pt"
                     android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:background="@drawable/edittext_border"
                     android:hint="Where do you live?" />
 

@@ -227,14 +227,13 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     }
 
     private void passAdmin() {
-        showProgressDialog("Please wait...");
         String pass = mAdminPassEditext.getText().toString().trim();
 
         if (TextUtils.isEmpty(pass)) {
             Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
             return;
         }
-
+        showProgressDialog("Please wait...");
         this.mAdmin.checkPassword(pass, this);
     }
     // reset password for email function

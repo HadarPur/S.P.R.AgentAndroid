@@ -38,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+
                 android:text="Your Report:"
                 android:textSize="25dp"
                 android:textColor="#000000"
@@ -50,6 +51,8 @@
                 android:layout_below="@+id/sub"
                 android:background="@android:color/transparent"
                 android:layout_above="@+id/submitBtn"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"/>
 

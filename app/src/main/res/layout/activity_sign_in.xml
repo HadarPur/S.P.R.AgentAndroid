@@ -33,6 +33,7 @@
                 android:layout_height="18pt"
                 android:textSize="6pt"
                 android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:background="@drawable/edittext_border"
                 android:inputType="textEmailAddress"
                 android:hint="Enter email address" />
@@ -59,6 +60,7 @@
                 android:layout_height="18pt"
                 android:textSize="6pt"
                 android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:gravity="center_vertical|left"
                 android:background="@drawable/edittext_border"
                 android:inputType="textPassword"
