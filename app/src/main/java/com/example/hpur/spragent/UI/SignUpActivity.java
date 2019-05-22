@@ -112,7 +112,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (this.mFormView.getVisibility() == View.VISIBLE) {
-            this.mFormView.setVisibility(View.INVISIBLE);
+            this.mFormView.setVisibility(View.GONE);
 
             Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
             this.mDetailsView.startAnimation(aniFade);
@@ -142,7 +142,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         // form view
         this.mFormView = findViewById(R.id.form_view);
-        this.mFormView.setVisibility(View.INVISIBLE);
+        this.mFormView.setVisibility(View.GONE);
 
         this.mFirstNameEditText = this.mFormView.findViewById(R.id.fname);
         this.mLastNameEditText = this.mFormView.findViewById(R.id.lname);
@@ -379,7 +379,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void run() {
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mLoadingView.startAnimation(aniFade);
-                mLoadingView.setVisibility(View.INVISIBLE);
+                mLoadingView.setVisibility(View.GONE);
 
                 mLoadingViewText.setText("");
             }

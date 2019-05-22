@@ -115,7 +115,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         if (this.mFormView.getVisibility() == View.VISIBLE) {
             Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
             this.mFormView.startAnimation(aniFade);
-            this.mFormView.setVisibility(View.INVISIBLE);
+            this.mFormView.setVisibility(View.GONE);
         } else {
             super.onBackPressed();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -136,7 +136,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         // form view
         this.mFormView = findViewById(R.id.profile_fill_layout);
-        this.mFormView.setVisibility(View.INVISIBLE);
+        this.mFormView.setVisibility(View.GONE);
 
         this.mFirstNameEditText = this.mFormView.findViewById(R.id.fname);
         this.mLastNameEditText = this.mFormView.findViewById(R.id.lname);
@@ -338,6 +338,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
         this.mFormView.startAnimation(aniFade);
-        this.mFormView.setVisibility(View.INVISIBLE);
+        this.mFormView.setVisibility(View.GONE);
     }
 }

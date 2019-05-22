@@ -169,7 +169,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 mForgetPassword = false;
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mResetView.startAnimation(aniFade);
-                mResetView.setVisibility(View.INVISIBLE);
+                mResetView.setVisibility(View.GONE);
                 enableMainButtons();
             }
         });
@@ -195,7 +195,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 mAdminPasswordRequired = false;
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mAdminView.startAnimation(aniFade);
-                mAdminView.setVisibility(View.INVISIBLE);
+                mAdminView.setVisibility(View.GONE);
 
                 enableMainButtons();
             }
@@ -206,7 +206,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
             public void onClick(View v) {
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mAlertView.startAnimation(aniFade);
-                mAlertView.setVisibility(View.INVISIBLE);
+                mAlertView.setVisibility(View.GONE);
                 enableMainButtons();
             }
         });
@@ -292,7 +292,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
 
     // sign up a user to the app
     private void userSignUp() {
-        mAdminView.setVisibility(View.INVISIBLE);
+        mAdminView.setVisibility(View.GONE);
         startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
@@ -337,7 +337,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
             public void run() {
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mLoadingView.startAnimation(aniFade);
-                mLoadingView.setVisibility(View.INVISIBLE);
+                mLoadingView.setVisibility(View.GONE);
 
                 mLoadingViewText.setText("");
             }
