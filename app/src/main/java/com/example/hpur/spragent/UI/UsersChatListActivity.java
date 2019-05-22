@@ -18,6 +18,7 @@ import com.example.hpur.spragent.Logic.Queries.OnChatCardClickedCallback;
 import com.example.hpur.spragent.Logic.TeenagerAdapter;
 import com.example.hpur.spragent.Logic.TeenagerNameModel;
 import com.example.hpur.spragent.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +36,7 @@ public class UsersChatListActivity extends AppCompatActivity implements OnChatCa
     private TeenagerAdapter mTeenagerAdapter;
 
     private ChildEventListener mChildEventListener;
+    private FirebaseAuth mFirebaseAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private ImageButton mBack;
@@ -45,8 +47,9 @@ public class UsersChatListActivity extends AppCompatActivity implements OnChatCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users_chat_list);
 
+        this.mFirebaseAuth = FirebaseAuth.getInstance();
         this.mFirebaseDatabase = FirebaseDatabase.getInstance();
-        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages").child("some_agent_uid");
+        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages").child(mFirebaseAuth.getCurrentUser().getUid());
 
         this.mTeenagerNameModels = new ArrayList<>();
 

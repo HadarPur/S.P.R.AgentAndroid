@@ -78,7 +78,7 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         String teenagersName[] = {"Maor","Hadar","Zafrir","Nir","Shiran","Alfi"};
         this.currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         this.mFirebaseDatabase = FirebaseDatabase.getInstance();
-        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages/some_agent_uid").child(intent.getStringExtra("UID"));
+        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages/"+currentFirebaseUser.getUid()).child(intent.getStringExtra("UID"));
         this.mChatBubbles = new ArrayList<>();
 
         findViews();

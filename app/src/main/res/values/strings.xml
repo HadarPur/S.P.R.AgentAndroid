@@ -3,7 +3,7 @@
     <string name="google_api">AIzaSyDQkp1Sh07b3cEKV2ZBdwog8mIUx8CaD2Q</string>
     <string name="Open">Open</string>
     <string name="Close">Close</string>
-
+    <string name="default_notification_channel_id">SPR_Chanel_2018</string>
 
     <string-array name="cities_array">
         <item>Afula</item>

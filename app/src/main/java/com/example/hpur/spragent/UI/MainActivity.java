@@ -32,6 +32,7 @@ import com.example.hpur.spragent.Storage.FireBaseAvailableAgents;
 import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mDrawerLayout;
     private Switch mAvailable;
     private FireBaseAvailableAgents mAvailableRef;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         this.mSharedPreferences = new SharedPreferencesStorage(getApplicationContext());
         this.mAvailableRef = new FireBaseAvailableAgents();
+        this.mAuth = FirebaseAuth.getInstance();
 
         findViews();
         initNavigationDrawer();
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 manager.createNotificationChannel(chanel);
             }
 
-            FirebaseMessaging.getInstance().subscribeToTopic("SPR")
+            FirebaseMessaging.getInstance().subscribeToTopic(mAuth.getCurrentUser().getUid())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
