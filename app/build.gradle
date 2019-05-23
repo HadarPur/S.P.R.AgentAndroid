@@ -70,6 +70,7 @@ dependencies {
 
     implementation 'org.apache.httpcomponents:httpcore:4.4.5'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
+    implementation 'com.google.firebase:firebase-firestore:19.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

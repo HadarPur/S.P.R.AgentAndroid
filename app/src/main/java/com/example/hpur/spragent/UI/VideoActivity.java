@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.example.hpur.spragent.R;
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
@@ -50,11 +52,19 @@ public class VideoActivity extends AppCompatActivity implements Session.SessionL
     private TextView mAlertTittle;
     private TextView mAlertText;
 
+    private FirebaseFirestore mFirebaseFirestore;
+    private FirebaseAuth mAuth;
+    private String mUID;
+    private String mConsumerUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+
+        this.mFirebaseFirestore = FirebaseFirestore.getInstance();
+        this.mAuth = FirebaseAuth.getInstance();
+        this.mUID = this.mAuth.getCurrentUser().getUid();
 
         findViews();
         setOnClick();

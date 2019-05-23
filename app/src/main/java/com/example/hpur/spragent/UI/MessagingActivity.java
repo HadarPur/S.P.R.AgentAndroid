@@ -142,6 +142,10 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
 
         this.mPhone = findViewById(R.id.phone);
         this.mVideo = findViewById(R.id.video);
+
+        this.mPhone.setClickable(false);
+        this.mVideo.setClickable(false);
+
         this.mBack = findViewById(R.id.backbtn);
         this.mAdd = findViewById(R.id.add_report);
         this.mInfo = findViewById(R.id.info);

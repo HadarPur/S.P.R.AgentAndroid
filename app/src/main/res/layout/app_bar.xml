@@ -54,7 +54,7 @@
             android:id="@+id/video"
             android:layout_width="20pt"
             android:layout_height="20pt"
-            android:src="@drawable/ic_videocam"
+            android:src="@drawable/ic_videocam_grey"
             android:background="@android:color/transparent"
             android:visibility="gone"
             android:clickable="false"/>
@@ -63,7 +63,7 @@
             android:id="@+id/phone"
             android:layout_width="20pt"
             android:layout_height="20pt"
-            android:src="@drawable/ic_phone"
+            android:src="@drawable/ic_phone_grey"
             android:visibility="gone"
             android:clickable="false"
             android:background="@android:color/transparent" />
