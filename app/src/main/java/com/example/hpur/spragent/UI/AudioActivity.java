@@ -99,11 +99,21 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         String[] perms = {Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO};
         if (EasyPermissions.hasPermissions(this, perms)) {
             // initialize and connect to the session
-//            openTok.tokboxHttpJsonRequest(this);
-
+            createSession();
         } else {
             EasyPermissions.requestPermissions(this, "This app needs access to your camera and mic to make video calls", RC_VIDEO_APP_PERM, perms);
         }
+    }
+
+    private void createSession() {
+        String apiKey = getIntent().getStringExtra("apiKey");
+        String sessionId = getIntent().getStringExtra("sessionId");
+        String tokenPublisher = getIntent().getStringExtra("tokenPublisher");
+        String tokenSubscriber = getIntent().getStringExtra("tokenSubscriber");
+
+        mSession = new Session.Builder(this, apiKey, sessionId).build();
+        mSession.setSessionListener(this);
+        mSession.connect(tokenSubscriber);
     }
 
     // ***************************************************************** //
@@ -170,39 +180,4 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         Log.e(TAG, "Publisher error: " + opentokError.getMessage());
     }
 
-//    // ***************************************************************** //
-//    // *************** Tokbox server request callback ****************** //
-//    // ***************************************************************** //
-//
-//    @Override
-//    public void onTokboxRequestSucceed(String apiKey, String sessionId, String tokenPublisher, String tokenSubscriber) {
-//        Log.i(TAG, "onTokboxRequestSucceed");
-//        Log.i(TAG, "apiKey = " +apiKey);
-//        Log.i(TAG, "sessionId = " +sessionId);
-//        Log.i(TAG, "tokenPublisher = " +tokenPublisher);
-//        Log.i(TAG, "tokenSubscriber = "+tokenSubscriber);
-//
-//        // initialize and connect to the session
-//        mSession = new Session.Builder(this, apiKey, sessionId).build();
-//        mSession.setSessionListener(this);
-//        mSession.connect(tokenPublisher);
-//    }
-//
-//    @Override
-//    public void onTokboxRequestFailed() {
-//        Log.e(TAG, "onTokboxRequestFailed");
-//
-//        this.mAlertTittle.setText("Connection failed");
-//        this.mAlertText.setText("Video connection failed, please try again later");
-//        Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
-//        this.mAlertView.startAnimation(aniFade);
-//        this.mAlertView.setVisibility(View.VISIBLE);
-//
-//        this.mAlertOkBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBackPressed();
-//            }
-//        });
-//    }
 }
