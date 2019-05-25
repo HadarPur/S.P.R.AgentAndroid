@@ -143,10 +143,11 @@ public class VideoActivity extends AppCompatActivity implements Session.SessionL
         String sessionId = getIntent().getStringExtra("sessionId");
         String tokenPublisher = getIntent().getStringExtra("tokenPublisher");
         String tokenSubscriber = getIntent().getStringExtra("tokenSubscriber");
+        String tokenModerator = getIntent().getStringExtra("tokenModerator");
 
         mSession = new Session.Builder(this, apiKey, sessionId).build();
         mSession.setSessionListener(this);
-        mSession.connect(tokenSubscriber);
+        mSession.connect(tokenModerator);
     }
 
     // ***************************************************************** //
@@ -176,7 +177,6 @@ public class VideoActivity extends AppCompatActivity implements Session.SessionL
 
     @Override
     public void onStreamReceived(Session session, Stream stream) {
-
         Log.i(TAG, "Stream Received");
         if (mSubscriber == null) {
             mSubscriber = new Subscriber.Builder(this, stream).build();
@@ -189,7 +189,6 @@ public class VideoActivity extends AppCompatActivity implements Session.SessionL
     @Override
     public void onStreamDropped(Session session, Stream stream) {
         Log.i(TAG, "Stream Dropped");
-
         if (mSubscriber != null) {
             mSubscriber = null;
             mSubscriberViewContainer.removeAllViews();

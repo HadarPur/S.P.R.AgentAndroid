@@ -57,8 +57,6 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
     private DatabaseReference mMessagesDatabaseReference;
     private ChildEventListener mChildEventListener;
 
-    private ImageButton mPhone;
-    private ImageButton mVideo;
     private ImageButton mBack;
     private ImageButton mInfo;
     private ImageButton mAdd;
@@ -140,11 +138,6 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         this. mSendBtn = findViewById(R.id.btn_chat_send);
         this.mEditText = findViewById(R.id.msg_type);
 
-        this.mPhone = findViewById(R.id.phone);
-        this.mVideo = findViewById(R.id.video);
-
-        this.mPhone.setClickable(false);
-        this.mVideo.setClickable(false);
 
         this.mBack = findViewById(R.id.backbtn);
         this.mAdd = findViewById(R.id.add_report);
@@ -156,14 +149,8 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         this.mDoneBtn = findViewById(R.id.doneBtn);
         this.mSubmitBtn = findViewById(R.id.submitBtn);
 
-        this.mPhone.setVisibility(View.VISIBLE);
-        this.mVideo.setVisibility(View.VISIBLE);
-
         this.mAdd.setVisibility(View.VISIBLE);
         this.mInfo.setVisibility(View.VISIBLE);
-
-        this.mPhone.setClickable(true);
-        this.mVideo.setClickable(true);
 
         this.mBack.setVisibility(View.VISIBLE);
 
@@ -180,24 +167,6 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
                 if (!hasFocus) {
                     UtilitiesFunc.hideKeyboard(MessagingActivity.this);
                 }
-            }
-        });
-
-        this.mPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "mPhone clicked");
-                startActivity(new Intent(MessagingActivity.this, AudioActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            }
-        });
-
-        this.mVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "mVideo clicked");
-                startActivity(new Intent(MessagingActivity.this, VideoActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 

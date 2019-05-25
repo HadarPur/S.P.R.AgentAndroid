@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.hpur.spragent.R;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
@@ -33,6 +35,12 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
     private Session mSession;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
+
+    private FrameLayout mPublisherViewContainer;
+    private FrameLayout mSubscriberViewContainer;
+
+    private SpinKitView mSpinKitViewUser;
+    private SpinKitView mSpinKitViewAgent;
 
     private Button mAlertOkBtn;
     private LinearLayout mAlertView;
@@ -58,6 +66,12 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         this.mAlertTittle = findViewById(R.id.alerttittle);
         this.mAlertText = findViewById(R.id.msg);
         this.mAlertOkBtn = findViewById(R.id.alert_def_btn);
+
+        this.mSpinKitViewUser = findViewById(R.id.spin_kit2);
+        this.mSpinKitViewAgent = findViewById(R.id.spin_kit);
+
+        this.mSpinKitViewUser.setVisibility(View.VISIBLE);
+        this.mSpinKitViewAgent.setVisibility(View.VISIBLE);
 
     }
 
@@ -98,7 +112,11 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
     private void requestPermissions() {
         String[] perms = {Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO};
         if (EasyPermissions.hasPermissions(this, perms)) {
+
             // initialize and connect to the session
+            mPublisherViewContainer = findViewById(R.id.publisher_frameLayout);
+            mSubscriberViewContainer = findViewById(R.id.subscriber_frameLayout);
+
             createSession();
         } else {
             EasyPermissions.requestPermissions(this, "This app needs access to your camera and mic to make video calls", RC_VIDEO_APP_PERM, perms);
@@ -110,10 +128,11 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         String sessionId = getIntent().getStringExtra("sessionId");
         String tokenPublisher = getIntent().getStringExtra("tokenPublisher");
         String tokenSubscriber = getIntent().getStringExtra("tokenSubscriber");
+        String tokenModerator = getIntent().getStringExtra("tokenModerator");
 
         mSession = new Session.Builder(this, apiKey, sessionId).build();
         mSession.setSessionListener(this);
-        mSession.connect(tokenSubscriber);
+        mSession.connect(tokenModerator);
     }
 
     // ***************************************************************** //
@@ -127,8 +146,11 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         mPublisher = new Publisher.Builder(this).build();
         mPublisher.setPublisherListener(this);
 
+        mPublisherViewContainer.addView(mPublisher.getView());
         mSession.publish(mPublisher);
+        mSpinKitViewUser.setVisibility(View.GONE);
     }
+
 
     @Override
     public void onDisconnected(Session session) {
@@ -137,13 +159,19 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
+
+    // ***************************************************************** //
+    // ******************* Subscriber methods tokbox ******************* //
+    // ***************************************************************** //
+
     @Override
     public void onStreamReceived(Session session, Stream stream) {
-
         Log.i(TAG, "Stream Received");
         if (mSubscriber == null) {
             mSubscriber = new Subscriber.Builder(this, stream).build();
             mSession.subscribe(mSubscriber);
+            mSubscriberViewContainer.addView(mSubscriber.getView());
+            this.mSpinKitViewAgent.setVisibility(View.GONE);
         }
     }
 
@@ -153,6 +181,7 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
 
         if (mSubscriber != null) {
             mSubscriber = null;
+            mSubscriberViewContainer.removeAllViews();
         }
     }
 
@@ -177,7 +206,8 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
 
     @Override
     public void onError(PublisherKit publisherKit, OpentokError opentokError) {
-        Log.e(TAG, "Publisher error: " + opentokError.getMessage());
+        Log.e(TAG, "Publisher error: " + opentokError.getMessage() +" Error code: " + opentokError.getErrorCode());
+        opentokError.getErrorCode();
     }
 
 }

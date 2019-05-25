@@ -82,6 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String sessionId = data.getString("sessionId");
             String tokenPublisher = data.getString("tokenPublisher");
             String tokenSubscriber = data.getString("tokenSubscriber");
+            String tokenModerator = data.getString("tokenModerator");
 
             switch (type) {
                 case "AUDIO":
@@ -96,6 +97,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.putExtra("sessionId", sessionId);
             intent.putExtra("tokenPublisher", tokenPublisher);
             intent.putExtra("tokenSubscriber", tokenSubscriber);
+            intent.putExtra("tokenModerator", tokenModerator);
 
             showNotification(body, title);
         } catch (JSONException e) {
