@@ -1,9 +1,12 @@
 package com.example.hpur.spragent.UI.Utils;
 
 import android.app.Activity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,5 +34,13 @@ public class UtilitiesFunc {
         }
 
         return capMatcher.appendTail(capBuffer).toString();
+    }
+
+
+    public static String getDate(long time) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(time * 1000);
+        String date = DateFormat.format("dd/MM/yyyy hh:mm a", cal).toString();
+        return date;
     }
 }

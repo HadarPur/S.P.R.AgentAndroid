@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+
+import com.example.hpur.spragent.Logic.Models.AgentModel;
 import com.example.hpur.spragent.R;
 import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
 
@@ -16,13 +18,14 @@ public class SplashActivity extends AppCompatActivity {
     public static int SPLASH_OUT=2000;
     private ImageView loading;
     public RotateAnimation rotate;
-    private SharedPreferencesStorage mSharedPreferences;
+    private AgentModel mAgentModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mSharedPreferences = new SharedPreferencesStorage(getApplicationContext());
+        this.mAgentModel = new AgentModel();
+
 
         rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF,
                 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
@@ -48,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mSharedPreferences.readData("SignedIn").equals("") || mSharedPreferences.readData("SignedIn").equals("false")) {
+                if (mAgentModel.getAgentLocalDataByKey(getApplicationContext(), "SignedIn").equals("") || mAgentModel.getAgentLocalDataByKey(getApplicationContext(), "SignedIn").equals("false")) {
                     Intent intent = new Intent(SplashActivity.this, SignInActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

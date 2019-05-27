@@ -1,6 +1,4 @@
-package com.example.hpur.spragent.Logic;
-
-import android.widget.ImageView;
+package com.example.hpur.spragent.Logic.Models;
 
 public class TeenagerNameModel {
     private String id;

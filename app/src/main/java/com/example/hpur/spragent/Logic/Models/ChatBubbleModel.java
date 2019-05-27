@@ -1,10 +1,8 @@
-package com.example.hpur.spragent.Logic;
+package com.example.hpur.spragent.Logic.Models;
 
-import com.example.hpur.spragent.Logic.Models.ImageModel;
-import com.example.hpur.spragent.Logic.Models.MapModel;
 import com.example.hpur.spragent.Logic.Types.MessageType;
 
-public class ChatBubble  {
+public class ChatBubbleModel {
 
     private String mTextMessage;
     private String mUserName;
@@ -12,22 +10,22 @@ public class ChatBubble  {
     private MapModel mMapModel;
     private ImageModel mImageModel;
 
-    public ChatBubble(){ }
+    public ChatBubbleModel(){ }
 
-    public ChatBubble(String mTextMessage, String userName, MessageType type) {
+    public ChatBubbleModel(String mTextMessage, String userName, MessageType type) {
         this.mTextMessage = mTextMessage;
         this.mMessageType = type;
         this.mUserName = userName;
     }
 
-    public ChatBubble(MapModel mMapModel, String mUserName, MessageType mMessageType) {
+    public ChatBubbleModel(MapModel mMapModel, String mUserName, MessageType mMessageType) {
         this.mUserName = mUserName;
         this.mMessageType = mMessageType;
         this.mMapModel = mMapModel;
         this.mTextMessage = "";
     }
 
-    public ChatBubble(ImageModel mImageModel, String mUserName, MessageType mMessageType) {
+    public ChatBubbleModel(ImageModel mImageModel, String mUserName, MessageType mMessageType) {
         this.mUserName = mUserName;
         this.mMessageType = mMessageType;
         this.mImageModel = mImageModel;

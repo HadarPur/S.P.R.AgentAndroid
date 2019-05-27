@@ -50,6 +50,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/sub"
                 android:layout_above="@+id/doneBtn"
+                android:textSize="12dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:layout_marginTop="20dp"

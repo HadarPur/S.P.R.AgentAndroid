@@ -26,38 +26,34 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.hpur.spragent.Logic.Models.AgentModel;
 import com.example.hpur.spragent.Logic.Types.AvailabilityType;
 import com.example.hpur.spragent.R;
-import com.example.hpur.spragent.Storage.FireBaseAvailableAgents;
-import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private Button mStartChat;
     private Button mAboutUs;
     private Button mSignOut;
-    private SharedPreferencesStorage mSharedPreferences;
     private ActionBarDrawerToggle mToggle;
     private DrawerLayout mDrawerLayout;
     private Switch mAvailable;
-    private FireBaseAvailableAgents mAvailableRef;
     private FirebaseAuth mAuth;
+    private AgentModel mAgentModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.mSharedPreferences = new SharedPreferencesStorage(getApplicationContext());
-        this.mAvailableRef = new FireBaseAvailableAgents();
+        this.mAgentModel = new AgentModel();
         this.mAuth = FirebaseAuth.getInstance();
 
         findViews();
@@ -74,18 +70,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 manager.createNotificationChannel(chanel);
             }
 
-            FirebaseMessaging.getInstance().subscribeToTopic(mAuth.getCurrentUser().getUid())
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            String msg = "Success";
-                            if (!task.isSuccessful()) {
-                                msg = "Failure";
-                            }
-                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            subscribeToTpickForPush();
         }
+    }
+
+    private void subscribeToTpickForPush() {
+        FirebaseMessaging.getInstance().subscribeToTopic(mAuth.getCurrentUser().getUid())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Success";
+                        if (!task.isSuccessful()) {
+                            msg = "Failure";
+                        }
+                        Log.d(TAG, msg);
+                    }
+                });
     }
 
     private void findViews() {
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setAvailability() {
-        String available = mSharedPreferences.readData("Available");
+        String available = mAgentModel.getAgentLocalDataByKey(getApplicationContext(),"Available");
         if (available.equals("") || available.equals("false")) {
             this.mAvailable.setChecked(false);
             this.mAvailable.setText("Off");
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.mStartChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String available = mSharedPreferences.readData("Available");
+                String available = mAgentModel.getAgentLocalDataByKey(getApplicationContext(),"Available");
 
                 if (available.equals("") || available.equals("false")) {
                     Toast.makeText(MainActivity.this, "You are not available", Toast.LENGTH_SHORT).show();
@@ -147,11 +147,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uid = mSharedPreferences.readData("UID");
+                String uid = mAgentModel.getAgentLocalDataByKey(getApplicationContext(), "UID");
 
-                mSharedPreferences.saveData("false", "SignedIn");
-                mSharedPreferences.saveData("false", "Available");
-                mAvailableRef.setAvailability(uid,AvailabilityType.OFF);
+
+                mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),"false", "SignedIn");
+                mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),"false", "Available");
+
+
+                mAgentModel.setAgentAvailability(uid,AvailabilityType.OFF);
 
                 Intent intent = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(intent);
@@ -162,16 +165,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         this.mAvailable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String uid = mSharedPreferences.readData("UID");
+                String uid = mAgentModel.getAgentLocalDataByKey(getApplicationContext(), "UID");
                 if (isChecked) {
                     mAvailable.setText("On");
-                    mSharedPreferences.saveData("true", "Available");
-                    mAvailableRef.setAvailability(uid,AvailabilityType.ON);
+                    mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),"true", "Available");
+                    mAgentModel.setAgentAvailability(uid,AvailabilityType.ON);
                 }
                 else {
                     mAvailable.setText("Off");
-                    mSharedPreferences.saveData("false", "Available");
-                    mAvailableRef.setAvailability(uid,AvailabilityType.OFF);
+                    mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),"false", "Available");
+                    mAgentModel.setAgentAvailability(uid,AvailabilityType.OFF);
                 }
             }
         });

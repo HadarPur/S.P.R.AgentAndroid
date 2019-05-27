@@ -12,16 +12,22 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-import com.example.hpur.spragent.Logic.ChatBubble;
+
+import com.example.hpur.spragent.Logic.Models.AgentModel;
+import com.example.hpur.spragent.Logic.Models.ChatBubbleModel;
 import com.example.hpur.spragent.Logic.ChatBubbleAdapter;
+import com.example.hpur.spragent.Logic.Models.ReportModel;
 import com.example.hpur.spragent.Logic.Queries.OnMessageModelClickedCallback;
+import com.example.hpur.spragent.Logic.Queries.ReportsCallback;
 import com.example.hpur.spragent.Logic.Types.MessageType;
 import com.example.hpur.spragent.R;
 import com.example.hpur.spragent.UI.Utils.UtilitiesFunc;
@@ -34,14 +40,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import android.widget.ImageButton;
 
 
-public class MessagingActivity extends AppCompatActivity implements OnMessageModelClickedCallback {
+public class MessagingActivity extends AppCompatActivity implements OnMessageModelClickedCallback, ReportsCallback {
 
     private final String TAG = "MessagingActivity:";
 
-    private List<ChatBubble> mChatBubbles;
+    private List<ChatBubbleModel> mChatBubbles;
     private String mUserName = "AnonymousTeenager1";
 
     private RelativeLayout mLoadingBack;
@@ -50,6 +58,8 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
     private View mSendBtn;
 
     private EditText mEditText;
+    private EditText mReportEditText;
+    private TextView mReportTextView;
     private ChatBubbleAdapter mChatAdapter;
 
     private FirebaseUser currentFirebaseUser;
@@ -146,6 +156,9 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         this.mInfoReport = findViewById(R.id.report_view);
         this.mAddReport = findViewById(R.id.report_enter_view);
 
+        this.mReportEditText = findViewById(R.id.report_edittxt);
+        this.mReportTextView = findViewById(R.id.reporttv);
+
         this.mDoneBtn = findViewById(R.id.doneBtn);
         this.mSubmitBtn = findViewById(R.id.submitBtn);
 
@@ -180,13 +193,15 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         this.mInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mInfoReport.setVisibility(View.VISIBLE);
+                ReportModel reportModel = new ReportModel();
+                reportModel.readReportFromFirebase(currentFirebaseUser.getUid(), MessagingActivity.this);
             }
         });
 
         this.mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mReportEditText.setText("");
                 mAddReport.setVisibility(View.VISIBLE);
             }
         });
@@ -194,14 +209,14 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         this.mSubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mInfoReport.setVisibility(View.GONE);
+                writeNewReportOnConsumer();
             }
         });
 
         this.mDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAddReport.setVisibility(View.GONE);
+                mInfoReport.setVisibility(View.GONE);
             }
         });
 
@@ -213,12 +228,26 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
                     Toast.makeText(MessagingActivity.this, "Please input some text...", Toast.LENGTH_SHORT).show();
                 } else {
                     //add message to list
-                    ChatBubble chatBubble = new ChatBubble(mEditText.getText().toString(), mUserName, MessageType.USER_CHAT_MESSAGE);
+                    ChatBubbleModel chatBubble = new ChatBubbleModel(mEditText.getText().toString(), mUserName, MessageType.USER_CHAT_MESSAGE);
                     mMessagesDatabaseReference.push().setValue(chatBubble);
                     mEditText.setText("");
                 }
             }
         });
+    }
+
+    private void writeNewReportOnConsumer() {
+        String timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+        String report = mReportEditText.getText().toString();
+
+        if (TextUtils.isEmpty(report)) {
+            Toast.makeText(MessagingActivity.this, "Please fill the report", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ReportModel reportModel = new ReportModel(timeStamp, report);
+        reportModel.saveReportToFirebase(currentFirebaseUser.getUid());
+        mAddReport.setVisibility(View.GONE);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -233,7 +262,7 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //Called in the start for each child in the node + every time a child inserted to the DB
-                    ChatBubble curBubbleMessage = dataSnapshot.getValue(ChatBubble.class);
+                    ChatBubbleModel curBubbleMessage = dataSnapshot.getValue(ChatBubbleModel.class);
                     //chat bubble layout decision depends on the source of the message.
                     if (!(curBubbleMessage.getmUserName().equals(mUserName))) {
                         Log.d(TAG, "another user message");
@@ -315,6 +344,21 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         Intent intent = new Intent(this,FullScreenImageActivity.class);
         intent.putExtra("urlPhotoClick",urlPhotoClick);
         startActivity(intent);
+    }
+
+    @Override
+    public void getReportsCallback(ArrayList<ReportModel> reportModelArray) {
+        String report = "";
+        AgentModel agentModel = new AgentModel().readLocalObj(this);
+        for (ReportModel reportModel: reportModelArray) {
+            report += "Date: " + UtilitiesFunc.getDate(Long.parseLong(reportModel.getTimestamp())) + "\n";
+            report += "Agent Name: " + agentModel.getFirstName() + " " + agentModel.getLastName() + "\n";
+            report += "Agent Report: " + reportModel.getReport() + "\n\n";
+        }
+        mReportTextView.setText(report);
+        mReportTextView.setMovementMethod(new ScrollingMovementMethod());
+        mInfoReport.setVisibility(View.VISIBLE);
+
     }
 }
 

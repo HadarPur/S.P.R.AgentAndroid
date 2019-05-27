@@ -1,10 +1,13 @@
 package com.example.hpur.spragent.Logic.Models;
 
 import android.content.Context;
-
+import com.example.hpur.spragent.Logic.Queries.CheckUserCallback;
+import com.example.hpur.spragent.Logic.Types.AvailabilityType;
 import com.example.hpur.spragent.Logic.Types.GenderType;
 import com.example.hpur.spragent.Logic.Types.SectorType;
 import com.example.hpur.spragent.Logic.Types.SexType;
+import com.example.hpur.spragent.Storage.FireBaseAuthenticationAgents;
+import com.example.hpur.spragent.Storage.FireBaseAvailableAgents;
 import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
 import com.google.gson.Gson;
 
@@ -112,5 +115,29 @@ public class AgentModel {
         AgentModel obj = gson.fromJson(json, AgentModel.class);
 
         return obj;
+    }
+
+    public void saveAgentToFirebase(String uid) {
+        FireBaseAuthenticationAgents agents = new FireBaseAuthenticationAgents();
+        agents.writeUserToDataBase(uid, this);
+    }
+
+    public void readAgentFromFirebase(Context ctx, int type, String email, final CheckUserCallback queryCallback) {
+        FireBaseAuthenticationAgents agents = new FireBaseAuthenticationAgents();
+        agents.checkUser(ctx,type, email, queryCallback);
+    }
+
+    public void setAgentAvailability(String uid, AvailabilityType available) {
+        FireBaseAvailableAgents availableAgents = new FireBaseAvailableAgents();
+        availableAgents.setAvailability(uid, available);
+    }
+
+    public String getAgentLocalDataByKey(Context ctx, String key) {
+        return new SharedPreferencesStorage(ctx).readData(key);
+    }
+
+    public void setAgentLocalDataByKeyAndValue(Context ctx, String val, String key) {
+        SharedPreferencesStorage sharedPreferencesStorage = new SharedPreferencesStorage(ctx);
+        sharedPreferencesStorage.saveData(val, key);
     }
 }

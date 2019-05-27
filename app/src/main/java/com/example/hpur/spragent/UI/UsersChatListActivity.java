@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import com.example.hpur.spragent.Logic.Queries.OnChatCardClickedCallback;
 import com.example.hpur.spragent.Logic.TeenagerAdapter;
-import com.example.hpur.spragent.Logic.TeenagerNameModel;
+import com.example.hpur.spragent.Logic.Models.TeenagerNameModel;
 import com.example.hpur.spragent.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;

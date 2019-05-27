@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.hpur.spragent.Logic.Models.ChatBubbleModel;
 import com.example.hpur.spragent.Logic.Queries.OnMessageModelClickedCallback;
 import com.example.hpur.spragent.R;
 import java.util.List;
@@ -25,11 +27,11 @@ public class ChatBubbleAdapter extends RecyclerView.Adapter<ChatBubbleHolder> {
     private static final String TAG = "ChatBubbleAdapter:";
 
     private Context mContext;
-    private List<ChatBubble> mChatBubbles;
+    private List<ChatBubbleModel> mChatBubbles;
     private int mItemResource;
     private OnMessageModelClickedCallback mOnMapClickedCallback;
 
-    public ChatBubbleAdapter(Context context, int resource, List<ChatBubble> chatBubbles, OnMessageModelClickedCallback onMapClickedCallback) {
+    public ChatBubbleAdapter(Context context, int resource, List<ChatBubbleModel> chatBubbles, OnMessageModelClickedCallback onMapClickedCallback) {
         this.mContext = context;
         this.mChatBubbles = chatBubbles;
         this.mItemResource = resource;
@@ -74,7 +76,7 @@ public class ChatBubbleAdapter extends RecyclerView.Adapter<ChatBubbleHolder> {
     @Override
     public void onBindViewHolder(@NonNull ChatBubbleHolder chatBubbleHolder, int position) {
         Log.d(TAG,"onBindViewHolder");
-        ChatBubble chatBubble = this.mChatBubbles.get(position);
+        ChatBubbleModel chatBubble = this.mChatBubbles.get(position);
         chatBubbleHolder.bindChatBubble(chatBubble, mOnMapClickedCallback);
     }
 

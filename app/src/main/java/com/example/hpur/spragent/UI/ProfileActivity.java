@@ -32,7 +32,6 @@ import com.example.hpur.spragent.Logic.Types.GenderType;
 import com.example.hpur.spragent.Logic.Types.SectorType;
 import com.example.hpur.spragent.Logic.Types.SexType;
 import com.example.hpur.spragent.R;
-import com.example.hpur.spragent.Storage.FireBaseAuthenticationAgents;
 import com.example.hpur.spragent.UI.Utils.UtilitiesFunc;
 import com.example.hpur.spragent.UI.Views.ToggleButtonGroupTableLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,7 +83,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private List<String> cities;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mCurrentUser;
-    private FireBaseAuthenticationAgents mAgents;
 
 
     @Override
@@ -99,7 +97,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         this.mFirebaseAuth = FirebaseAuth.getInstance();
         this.mCurrentUser = mFirebaseAuth.getCurrentUser();
-        this.mAgents = new FireBaseAuthenticationAgents();
 
         cities = new ArrayList<>();
         cities = Arrays.asList(getResources().getStringArray(R.array.cities_array));
@@ -333,7 +330,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         AgentModel user = new AgentModel(email, mFirstName, mLastName, SexType.valueOf(mSex.toUpperCase()),mCity, SectorType.valueOf(mSector.toUpperCase()), mAge, GenderType.valueOf(mGender.toUpperCase()));
         user.saveLocalObj(ProfileActivity.this);
 
-        this.mAgents.writeUserToDataBase(mCurrentUser.getUid(), new AgentModel().readLocalObj(ProfileActivity.this));
+        user.saveAgentToFirebase(mCurrentUser.getUid());
         setupViews();
 
         Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);

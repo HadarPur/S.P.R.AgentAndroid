@@ -1,7 +1,5 @@
 package com.example.hpur.spragent.Storage;
 
-import android.util.Log;
-
 import com.example.hpur.spragent.Logic.Types.AvailabilityType;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
