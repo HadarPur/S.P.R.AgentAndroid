@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void subscribeToTpickForPush() {
+
         FirebaseMessaging.getInstance().subscribeToTopic(mAuth.getCurrentUser().getUid())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

@@ -33,11 +33,6 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
     private Publisher mPublisher;
     private Subscriber mSubscriber;
 
-    private FrameLayout mPublisherViewContainer;
-    private FrameLayout mSubscriberViewContainer;
-
-    private SpinKitView mSpinKitViewUser;
-    private SpinKitView mSpinKitViewAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +48,6 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         this.mBack = findViewById(R.id.backbtn);
         this.mEndCall = findViewById(R.id.endcallvideo);
         this.mBack.setVisibility(View.VISIBLE);
-
-        this.mSpinKitViewUser = findViewById(R.id.spin_kit2);
-        this.mSpinKitViewAgent = findViewById(R.id.spin_kit);
-
-        this.mSpinKitViewUser.setVisibility(View.VISIBLE);
-        this.mSpinKitViewAgent.setVisibility(View.VISIBLE);
-
     }
 
     public void setOnClick() {
@@ -100,10 +88,6 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         String[] perms = {Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO};
         if (EasyPermissions.hasPermissions(this, perms)) {
 
-            // initialize and connect to the session
-            mPublisherViewContainer = findViewById(R.id.publisher_frameLayout);
-            mSubscriberViewContainer = findViewById(R.id.subscriber_frameLayout);
-
             createSession();
         } else {
             EasyPermissions.requestPermissions(this, "This app needs access to your camera and mic to make video calls", RC_VIDEO_APP_PERM, perms);
@@ -133,9 +117,7 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         mPublisher = new Publisher.Builder(this).build();
         mPublisher.setPublisherListener(this);
 
-        mPublisherViewContainer.addView(mPublisher.getView());
         mSession.publish(mPublisher);
-        mSpinKitViewUser.setVisibility(View.GONE);
     }
 
 
@@ -157,8 +139,6 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         if (mSubscriber == null) {
             mSubscriber = new Subscriber.Builder(this, stream).build();
             mSession.subscribe(mSubscriber);
-            mSubscriberViewContainer.addView(mSubscriber.getView());
-            this.mSpinKitViewAgent.setVisibility(View.GONE);
         }
     }
 
@@ -168,7 +148,7 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
 
         if (mSubscriber != null) {
             mSubscriber = null;
-            mSubscriberViewContainer.removeAllViews();
+            onBackPressed();
         }
     }
 
