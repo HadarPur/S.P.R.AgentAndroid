@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.hpur.spragent.Logic.Models.AgentModel;
 import com.example.hpur.spragent.Logic.Models.ChatBubbleModel;
 import com.example.hpur.spragent.Logic.ChatBubbleAdapter;
@@ -41,7 +40,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import android.widget.ImageButton;
 
 
@@ -62,7 +60,7 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
     private TextView mReportTextView;
     private ChatBubbleAdapter mChatAdapter;
 
-    private FirebaseUser currentFirebaseUser;
+    private FirebaseUser mCurrentFirebaseUser;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private ChildEventListener mChildEventListener;
@@ -83,10 +81,10 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         setContentView(R.layout.activity_messaging);
 
         Intent intent = getIntent();
-        String teenagersName[] = {"Maor","Hadar","Zafrir","Nir","Shiran","Alfi"};
-        this.currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        
+        this.mCurrentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         this.mFirebaseDatabase = FirebaseDatabase.getInstance();
-        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages/"+currentFirebaseUser.getUid()).child(intent.getStringExtra("UID"));
+        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages/"+ mCurrentFirebaseUser.getUid()).child(intent.getStringExtra("UID"));
         this.mChatBubbles = new ArrayList<>();
 
         findViews();
@@ -194,7 +192,7 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
             @Override
             public void onClick(View v) {
                 ReportModel reportModel = new ReportModel();
-                reportModel.readReportFromFirebase(currentFirebaseUser.getUid(), MessagingActivity.this);
+                reportModel.readReportFromFirebase(mCurrentFirebaseUser.getUid(), MessagingActivity.this);
             }
         });
 
@@ -246,7 +244,7 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         }
 
         ReportModel reportModel = new ReportModel(timeStamp, report);
-        reportModel.saveReportToFirebase(currentFirebaseUser.getUid());
+        reportModel.saveReportToFirebase(mCurrentFirebaseUser.getUid());
         mAddReport.setVisibility(View.GONE);
     }
 

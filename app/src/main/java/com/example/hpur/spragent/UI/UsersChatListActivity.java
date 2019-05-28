@@ -30,11 +30,11 @@ import java.util.List;
 public class UsersChatListActivity extends AppCompatActivity implements OnChatCardClickedCallback {
 
     private final String TAG = "UsersChatListActivity:";
+
     private List<TeenagerNameModel> mTeenagerNameModels;
     private RelativeLayout mLoadingBack;
     private RecyclerView mRecycleView;
     private TeenagerAdapter mTeenagerAdapter;
-
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseDatabase mFirebaseDatabase;

@@ -1,4 +1,5 @@
 package com.example.hpur.spragent.UI;
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.hpur.spragent.Logic.Models.AdminModel;
 import com.example.hpur.spragent.Logic.Models.AgentModel;
 import com.example.hpur.spragent.Logic.Queries.CheckUserCallback;
@@ -61,12 +61,6 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     private TextView mLoadingViewText;
     private LinearLayout mLoadingView;
 
-    private UtilitiesFunc mUtils;
-
-    private Button mAlertOkBtn;
-    private LinearLayout mAlertView;
-    private TextView mAlertTittle;
-    private TextView mAlertText;
     private AgentModel mAgentModel;
 
     @Override
@@ -77,7 +71,6 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         this.mFirebaseAuth = FirebaseAuth.getInstance();
         this.mCurrentUser = mFirebaseAuth.getCurrentUser();
 
-        this.mUtils = new UtilitiesFunc();
         this.mAgentModel = new AgentModel();
 
         this.mForgetPassword = false;
@@ -114,11 +107,6 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         this.mGoBackAdminBtn = findViewById(R.id.closeadmin);
         this.mAdminBtn = findViewById(R.id.admin);
         this.mAdminPassEditext = findViewById(R.id.adminpass);
-
-        this.mAlertView = findViewById(R.id.alertview);
-        this.mAlertTittle = findViewById(R.id.alerttittle);
-        this.mAlertText = findViewById(R.id.msg);
-        this.mAlertOkBtn = findViewById(R.id.alert_def_btn);
 
         this.mLoadingView = findViewById(R.id.loadingview);
         this.mLoadingViewText = findViewById(R.id.progress_dialog_text);
@@ -195,16 +183,6 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 enableMainButtons();
             }
         });
-
-        this.mAlertOkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
-                mAlertView.startAnimation(aniFade);
-                mAlertView.setVisibility(View.GONE);
-                enableMainButtons();
-            }
-        });
     }
 
     @Override
@@ -243,9 +221,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         }
 
         showProgressDialog("Please wait...");
-
-        AgentModel agentModel = new AgentModel();
-        agentModel.readAgentFromFirebase(this,RESET, this.mEmail, SignInActivity.this);
+        mAgentModel.readAgentFromFirebase(this,RESET, this.mEmail, SignInActivity.this);
     }
 
 
@@ -278,8 +254,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                            AgentModel agentModel = new AgentModel();
-                            agentModel.readAgentFromFirebase(SignInActivity.this,SIGN, user.getEmail(), SignInActivity.this);
+                            mAgentModel.readAgentFromFirebase(SignInActivity.this,SIGN, user.getEmail(), SignInActivity.this);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -316,7 +291,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
 
     // show progress dialog
     private void showProgressDialog(final String msg) {
-        this.mUtils.hideKeyboard(this);
+        UtilitiesFunc.hideKeyboard(this);
 
         runOnUiThread(new Runnable() {
             @Override

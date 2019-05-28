@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.hpur.spragent.Logic.Models.TeenagerNameModel;
 import com.example.hpur.spragent.Logic.Queries.OnChatCardClickedCallback;
 import com.example.hpur.spragent.R;

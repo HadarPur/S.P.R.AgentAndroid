@@ -22,7 +22,6 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.hpur.spragent.Logic.Models.AgentModel;
 import com.example.hpur.spragent.Logic.Types.GenderType;
 import com.example.hpur.spragent.Logic.Types.SectorType;
@@ -35,7 +34,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
     private TextView mLoadingViewText;
 
     final Calendar myCalendar = Calendar.getInstance();
-    private List<String> cities;
+    private List<String> mCities;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mCurrentUser;
 
@@ -99,10 +97,10 @@ public class SignUpActivity extends AppCompatActivity {
         findViews();
         setupOnClick();
 
-        cities = new ArrayList<>();
-        cities = Arrays.asList(getResources().getStringArray(R.array.cities_array));
+        mCities = new ArrayList<>();
+        mCities = Arrays.asList(getResources().getStringArray(R.array.cities_array));
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.drop_down,R.id.tvHintCompletion, cities);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.drop_down,R.id.tvHintCompletion, mCities);
         mCityAutoCompleteTextView.setThreshold(1); //will start working from first character
         mCityAutoCompleteTextView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -279,7 +277,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         // auto complete city
-        if (TextUtils.isEmpty(this.mCity) || !cities.contains(this.mCity)) {
+        if (TextUtils.isEmpty(this.mCity) || !mCities.contains(this.mCity)) {
             Toast.makeText(this, "Please enter a city", Toast.LENGTH_LONG).show();
             return;
         }

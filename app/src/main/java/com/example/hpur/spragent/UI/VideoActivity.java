@@ -6,32 +6,22 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.example.hpur.spragent.R;
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
 import com.opentok.android.Session;
 import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
-
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class VideoActivity extends AppCompatActivity implements Session.SessionListener, PublisherKit.PublisherListener {
 
     private static final String TAG = VideoActivity.class.getSimpleName();
-    private static final int RC_SETTINGS_SCREEN_PERM = 123;
     private static final int RC_VIDEO_APP_PERM = 124;
 
     private ImageButton mBack;
@@ -47,41 +37,20 @@ public class VideoActivity extends AppCompatActivity implements Session.SessionL
     private SpinKitView mSpinKitViewUser;
     private SpinKitView mSpinKitViewAgent;
 
-    private Button mAlertOkBtn;
-    private LinearLayout mAlertView;
-    private TextView mAlertTittle;
-    private TextView mAlertText;
-
-    private FirebaseFirestore mFirebaseFirestore;
-    private FirebaseAuth mAuth;
-    private String mUID;
-    private String mConsumerUID;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-        this.mFirebaseFirestore = FirebaseFirestore.getInstance();
-        this.mAuth = FirebaseAuth.getInstance();
-        this.mUID = this.mAuth.getCurrentUser().getUid();
-
         findViews();
         setOnClick();
         requestPermissions();
-
-
     }
 
     public void findViews() {
         this.mBack = findViewById(R.id.backbtn);
         this.mEndCall = findViewById(R.id.endcallvideo);
         this.mBack.setVisibility(View.VISIBLE);
-
-        this.mAlertView = findViewById(R.id.alertview);
-        this.mAlertTittle = findViewById(R.id.alerttittle);
-        this.mAlertText = findViewById(R.id.msg);
-        this.mAlertOkBtn = findViewById(R.id.alert_def_btn);
 
         this.mSpinKitViewUser = findViewById(R.id.spin_kit2);
         this.mSpinKitViewAgent = findViewById(R.id.spin_kit);
@@ -133,8 +102,6 @@ public class VideoActivity extends AppCompatActivity implements Session.SessionL
 
         } else {
             EasyPermissions.requestPermissions(this, "This app needs access to your camera and mic to make video calls", RC_VIDEO_APP_PERM, perms);
-
-
         }
     }
 

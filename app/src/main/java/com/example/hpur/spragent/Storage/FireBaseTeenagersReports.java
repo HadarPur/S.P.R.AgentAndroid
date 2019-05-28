@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class FireBaseTeenagersReports {
+
     private DatabaseReference mRef;
     private ArrayList<ReportModel> mReportModelsArrayList;
+
     // c'tor
     public FireBaseTeenagersReports() {
         FirebaseDatabase data = FirebaseDatabase.getInstance();

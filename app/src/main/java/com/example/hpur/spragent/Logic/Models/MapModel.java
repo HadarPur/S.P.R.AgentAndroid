@@ -1,6 +1,7 @@
 package com.example.hpur.spragent.Logic.Models;
 
 public class MapModel {
+
     private String latitude;
     private String longitude;
 

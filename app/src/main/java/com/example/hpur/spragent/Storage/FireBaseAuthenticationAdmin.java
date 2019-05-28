@@ -9,6 +9,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Iterator;
 
 public class FireBaseAuthenticationAdmin {
+
     private DatabaseReference mRef;
 
     // c'tor

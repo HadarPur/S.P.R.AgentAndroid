@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.hpur.spragent.Logic.Models.ChatBubbleModel;
 import com.example.hpur.spragent.Logic.Queries.OnMessageModelClickedCallback;
 import com.example.hpur.spragent.R;

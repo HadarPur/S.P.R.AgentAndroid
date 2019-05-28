@@ -6,11 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.example.hpur.spragent.R;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.opentok.android.OpentokError;
@@ -42,11 +39,6 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
     private SpinKitView mSpinKitViewUser;
     private SpinKitView mSpinKitViewAgent;
 
-    private Button mAlertOkBtn;
-    private LinearLayout mAlertView;
-    private TextView mAlertTittle;
-    private TextView mAlertText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +53,6 @@ public class AudioActivity extends AppCompatActivity implements Session.SessionL
         this.mBack = findViewById(R.id.backbtn);
         this.mEndCall = findViewById(R.id.endcallvideo);
         this.mBack.setVisibility(View.VISIBLE);
-
-        this.mAlertView = findViewById(R.id.alertview);
-        this.mAlertTittle = findViewById(R.id.alerttittle);
-        this.mAlertText = findViewById(R.id.msg);
-        this.mAlertOkBtn = findViewById(R.id.alert_def_btn);
 
         this.mSpinKitViewUser = findViewById(R.id.spin_kit2);
         this.mSpinKitViewAgent = findViewById(R.id.spin_kit);

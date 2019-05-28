@@ -1,16 +1,14 @@
 package com.example.hpur.spragent.Logic.Models;
 
-import android.content.Context;
-
 import com.example.hpur.spragent.Logic.Queries.ReportsCallback;
 import com.example.hpur.spragent.Storage.FireBaseTeenagersReports;
 
 public class ReportModel {
+
     private String timestamp;
     private String report;
 
     public ReportModel() {
-
     }
 
     public ReportModel(String timestamp, String report) {

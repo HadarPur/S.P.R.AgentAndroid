@@ -8,14 +8,10 @@ import android.widget.RadioButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-/**
- * @author diego
- *
- */
-public class ToggleButtonGroupTableLayout extends TableLayout  implements OnClickListener {
+public class ToggleButtonGroupTableLayout extends TableLayout implements OnClickListener {
 
     private static final String TAG = "ToggleButtonGroupTableLayout";
-    private RadioButton activeRadioButton;
+    private RadioButton mActiveRadioButton;
 
     /**
      * @param context
@@ -37,11 +33,11 @@ public class ToggleButtonGroupTableLayout extends TableLayout  implements OnClic
     @Override
     public void onClick(View v) {
         final RadioButton rb = (RadioButton) v;
-        if ( activeRadioButton != null ) {
-            activeRadioButton.setChecked(false);
+        if ( mActiveRadioButton != null ) {
+            mActiveRadioButton.setChecked(false);
         }
         rb.setChecked(true);
-        activeRadioButton = rb;
+        mActiveRadioButton = rb;
     }
 
     /* (non-Javadoc)
@@ -76,12 +72,10 @@ public class ToggleButtonGroupTableLayout extends TableLayout  implements OnClic
     }
 
     public int getCheckedRadioButtonId() {
-        if ( activeRadioButton != null ) {
-            return activeRadioButton.getId();
+        if ( mActiveRadioButton != null ) {
+            return mActiveRadioButton.getId();
         }
 
         return -1;
     }
-
-
 }

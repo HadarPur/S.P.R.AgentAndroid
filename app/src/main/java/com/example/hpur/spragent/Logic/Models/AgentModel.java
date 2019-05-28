@@ -12,6 +12,7 @@ import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
 import com.google.gson.Gson;
 
 public class AgentModel {
+
     private String email;
     private String firstName;
     private String lastName;
