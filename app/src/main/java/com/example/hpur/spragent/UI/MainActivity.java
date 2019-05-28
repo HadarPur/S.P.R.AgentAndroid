@@ -100,13 +100,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setAvailability() {
         String available = mAgentModel.getAgentLocalDataByKey(getApplicationContext(),"Available");
+        String uid = mAgentModel.getAgentLocalDataByKey(getApplicationContext(), "UID");
+
         if (available.equals("") || available.equals("false")) {
             this.mAvailable.setChecked(false);
             this.mAvailable.setText("Off");
+            mAgentModel.setAgentAvailability(uid, AvailabilityType.OFF);
         }
         else {
             this.mAvailable.setChecked(true);
             this.mAvailable.setText("On");
+            mAgentModel.setAgentAvailability(uid, AvailabilityType.ON);
         }
     }
 
@@ -147,10 +151,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 String uid = mAgentModel.getAgentLocalDataByKey(getApplicationContext(), "UID");
 
-
                 mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),"false", "SignedIn");
                 mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),"false", "Available");
-
 
                 mAgentModel.setAgentAvailability(uid,AvailabilityType.OFF);
 
