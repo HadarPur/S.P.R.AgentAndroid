@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
-        android:text="Agent"/>
+        android:text="Consumer"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
