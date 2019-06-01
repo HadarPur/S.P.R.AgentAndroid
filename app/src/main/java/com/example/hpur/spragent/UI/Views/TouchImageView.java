@@ -25,8 +25,6 @@ import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
-
-// taken from https://github.com/AleBarreto/FirebaseAndroidChat/blob/master/app/src/main/java/alessandro/firebaseandroid/view/TouchImageView.java
 @SuppressLint("AppCompatCustomView")
 public class TouchImageView extends ImageView {
 

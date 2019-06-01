@@ -1,7 +1,6 @@
 package com.example.hpur.spragent.Storage;
 
 import android.content.Context;
-
 import com.example.hpur.spragent.Logic.Models.AgentModel;
 import com.example.hpur.spragent.Logic.Queries.CheckUserCallback;
 import com.google.firebase.database.DataSnapshot;

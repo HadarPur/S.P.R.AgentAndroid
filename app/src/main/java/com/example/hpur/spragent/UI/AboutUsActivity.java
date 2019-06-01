@@ -9,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.example.hpur.spragent.R;
 
-
 public class AboutUsActivity extends AppCompatActivity {
     private TextView mAboutUsTextView;
     private ImageButton mBack;
