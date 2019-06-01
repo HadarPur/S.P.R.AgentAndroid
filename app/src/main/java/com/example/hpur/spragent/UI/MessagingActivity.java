@@ -73,18 +73,17 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
 
     private LinearLayout mInfoReport;
     private LinearLayout mAddReport;
-
+    private String mConsumerUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
 
-        Intent intent = getIntent();
-        
+        this.mConsumerUID = getIntent().getStringExtra("UID");
         this.mCurrentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         this.mFirebaseDatabase = FirebaseDatabase.getInstance();
-        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages/"+ mCurrentFirebaseUser.getUid()).child(intent.getStringExtra("UID"));
+        this.mMessagesDatabaseReference = mFirebaseDatabase.getReference("SPRApp/Messages/"+ mCurrentFirebaseUser.getUid()).child(mConsumerUID);
         this.mChatBubbles = new ArrayList<>();
 
         findViews();
@@ -192,7 +191,7 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
             @Override
             public void onClick(View v) {
                 ReportModel reportModel = new ReportModel();
-                reportModel.readReportFromFirebase(mCurrentFirebaseUser.getUid(), MessagingActivity.this);
+                reportModel.readReportFromFirebase(mConsumerUID, MessagingActivity.this);
             }
         });
 
@@ -244,7 +243,7 @@ public class MessagingActivity extends AppCompatActivity implements OnMessageMod
         }
 
         ReportModel reportModel = new ReportModel(timeStamp, report);
-        reportModel.saveReportToFirebase(mCurrentFirebaseUser.getUid());
+        reportModel.saveReportToFirebase(mConsumerUID);
         mAddReport.setVisibility(View.GONE);
     }
 

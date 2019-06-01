@@ -3,12 +3,10 @@ package com.example.hpur.spragent.UI;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +26,7 @@ import android.widget.Toast;
 import com.example.hpur.spragent.Logic.Models.AgentModel;
 import com.example.hpur.spragent.Logic.Types.AvailabilityType;
 import com.example.hpur.spragent.R;
+import com.example.hpur.spragent.UI.Utils.UtilitiesFunc;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +36,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private Button mStartChat;
+    private Button mOpenChatList;
     private Button mAboutUs;
     private Button mSignOut;
     private ActionBarDrawerToggle mToggle;
@@ -58,22 +57,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initNavigationDrawer();
         setupOnClick();
 
-        if(!isNetworkAvailable(this)) {
+
+        if(!UtilitiesFunc.haveNetworkConnection(this)) {
             showConnectionInternetFailed();
-        }
-        else {
+        } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel chanel = new NotificationChannel("MyNotifications", "MyNotifications", NotificationManager.IMPORTANCE_HIGH);
                 NotificationManager manager = getSystemService(NotificationManager.class);
                 manager.createNotificationChannel(chanel);
             }
-
-            subscribeToTpickForPush();
+            subscribeToTopicForPush();
         }
     }
 
-    private void subscribeToTpickForPush() {
-
+    private void subscribeToTopicForPush() {
         FirebaseMessaging.getInstance().subscribeToTopic(mAuth.getCurrentUser().getUid())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -90,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void findViews() {
         this.mAvailable = findViewById(R.id.availability); // initiate Switch
 
-        this.mStartChat = findViewById(R.id.chat);
+        this.mOpenChatList = findViewById(R.id.chat);
         this.mAboutUs = findViewById(R.id.about_us);
         this.mSignOut = findViewById(R.id.signout);
 
@@ -122,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupOnClick() {
-        this.mStartChat.setOnClickListener(new View.OnClickListener() {
+        this.mOpenChatList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String available = mAgentModel.getAgentLocalDataByKey(getApplicationContext(),"Available");
@@ -229,30 +226,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    //check network connection
-    private static boolean isNetworkAvailable(Context ctx) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if ((connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null
-                && connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED)
-                || (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null
-                && connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
     //alert network not available
     private void showConnectionInternetFailed() {
+        disableButtons();
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Network Connection Failed");
         alertDialog.setMessage("Network is not enabled." +
                 "\n"+
                 "If you want to use this app you need a connection to the network");
-        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                startActivity(intent);
+                finish();
+            }
+        });
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
                 finish();
             }
         });
@@ -265,4 +259,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alertDialog.show();
     }
 
+    private void disableButtons() {
+        mOpenChatList.setClickable(false);
+        mAboutUs.setClickable(false);
+    }
 }

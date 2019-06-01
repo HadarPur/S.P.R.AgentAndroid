@@ -42,8 +42,9 @@ public class AboutUsActivity extends AppCompatActivity {
 
         mAboutUsTextView.setText("S.P.R: Saving population at risk\n\n" +
                 "S.P.R main goal is to provide a simplified and easiest platform for youth at risk, who needs an immediate help, especially on late hours.\n\n" +
-                "In our app youth at risk can to chat with human agent volunteer who make a proper training, this agent will be personally assigned to him by artificial intelligence for maximum results.\n\n"+
-                "Also, if the user does not feel in comfortable to chat with an agent and want to get help in a shelters, he could navigate to closest shelter from his location.");
+                "In our app youth at risk can chat with human agent volunteer who is a certified agent.\n\n" +
+                "This agent will be personally assigned to him by artificial intelligence to insure maximum results.\n\n"+
+                "Also, if the user does not feel in comfortable to chat with an agent and want to get help in shelters, he could navigate to closest shelter from his location, Police station and Hospitals as well.");
         mAboutUsTextView.setMovementMethod(new ScrollingMovementMethod());
         mAboutUsTextView.setTextColor(Color.BLACK);
 
