@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/border"
+    android:orientation="vertical"
+    android:layoutDirection="ltr"
+    android:gravity="center"
+    android:id="@+id/alertview">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relLayout2"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="30dp"
+            android:text=""
+            android:id="@+id/alerttittle"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="30dp"
+            android:text=""
+            android:id="@+id/msg"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:gravity="left" />
+
+        <Button
+            android:id="@+id/alert_def_btn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:fontFamily="serif"
+            android:text="Ok"
+            android:textColor="@android:color/white"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

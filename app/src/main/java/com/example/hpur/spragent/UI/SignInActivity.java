@@ -1,5 +1,5 @@
 package com.example.hpur.spragent.UI;
-import android.app.ProgressDialog;
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +14,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.hpur.spragent.Queries.CheckUserCallback;
+import com.example.hpur.spragent.Logic.Models.AdminModel;
+import com.example.hpur.spragent.Logic.Models.AgentModel;
+import com.example.hpur.spragent.Logic.Queries.CheckUserCallback;
 import com.example.hpur.spragent.R;
-import com.example.hpur.spragent.Storage.FireBaseAuthenticationAdmin;
-import com.example.hpur.spragent.Storage.FireBaseAuthenticationAgents;
-import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
+import com.example.hpur.spragent.UI.Utils.UtilitiesFunc;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +30,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
 
     private static final String KEY = "connect", IS_FIRST_INSTALLATION = "false";
     private final int RESET=0, SIGN=1;
+    private final int MIN_PASS_LEN = 7;
 
     private static final String TAG = SignInActivity.class.getSimpleName();
     private Button mSignInBtn;
@@ -40,10 +41,9 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     private FirebaseAuth mFirebaseAuth;
     private String mEmail;
     private String mPass;
-    private ProgressDialog mProgressDialog;
-    private FireBaseAuthenticationAgents mUsers;
-    private FireBaseAuthenticationAdmin mAdmin;
+
     private FirebaseUser mCurrentUser;
+
     private boolean mForgetPassword;
     private boolean mAdminPasswordRequired;
 
@@ -58,8 +58,10 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     private LinearLayout mResetView;
     private LinearLayout mAdminView;
 
-    private SharedPreferencesStorage mSharedPreferences;
+    private TextView mLoadingViewText;
+    private LinearLayout mLoadingView;
 
+    private AgentModel mAgentModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +69,12 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         setContentView(R.layout.activity_sign_in);
 
         this.mFirebaseAuth = FirebaseAuth.getInstance();
+        this.mCurrentUser = mFirebaseAuth.getCurrentUser();
 
-        this.mProgressDialog = new ProgressDialog(this);
-        this.mProgressDialog.setCancelable(false);
+        this.mAgentModel = new AgentModel();
 
-        this.mUsers = new FireBaseAuthenticationAgents();
-        this.mAdmin = new FireBaseAuthenticationAdmin();
+        this.mForgetPassword = false;
 
-        this.mSharedPreferences = new SharedPreferencesStorage(getApplicationContext());
         this.mForgetPassword = false;
         this.mAdminPasswordRequired = false;
 
@@ -108,8 +108,11 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         this.mAdminBtn = findViewById(R.id.admin);
         this.mAdminPassEditext = findViewById(R.id.adminpass);
 
-        this.mEmailEditText.setText(mSharedPreferences.readData("Email"), TextView.BufferType.EDITABLE);
-        this.mEmailReset.setText(mSharedPreferences.readData("Email"), TextView.BufferType.EDITABLE);
+        this.mLoadingView = findViewById(R.id.loadingview);
+        this.mLoadingViewText = findViewById(R.id.progress_dialog_text);
+
+        this.mEmailEditText.setText(mAgentModel.getAgentLocalDataByKey(getApplicationContext(),"Email"), TextView.BufferType.EDITABLE);
+        this.mEmailReset.setText(mAgentModel.getAgentLocalDataByKey(getApplicationContext(),"Email"), TextView.BufferType.EDITABLE);
     }
 
     // setup all button events when they clicked
@@ -128,19 +131,17 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 mAdminView.startAnimation(aniFade);
                 mAdminView.setVisibility(View.VISIBLE);
 
-//                userSignUp();
             }
         });
 
         this.mPasswordResetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disableMainButtons();
-
                 mForgetPassword = true;
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
                 mResetView.startAnimation(aniFade);
                 mResetView.setVisibility(View.VISIBLE);
+                disableMainButtons();
             }
         });
 
@@ -151,8 +152,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 mForgetPassword = false;
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mResetView.startAnimation(aniFade);
-                mResetView.setVisibility(View.INVISIBLE);
-
+                mResetView.setVisibility(View.GONE);
                 enableMainButtons();
             }
         });
@@ -168,7 +168,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         this.mAdminBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                passAdmin();
             }
         });
 
@@ -178,7 +178,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                 mAdminPasswordRequired = false;
                 Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
                 mAdminView.startAnimation(aniFade);
-                mAdminView.setVisibility(View.INVISIBLE);
+                mAdminView.setVisibility(View.GONE);
 
                 enableMainButtons();
             }
@@ -199,6 +199,18 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         }
     }
 
+    private void passAdmin() {
+        String pass = mAdminPassEditext.getText().toString().trim();
+
+        if (TextUtils.isEmpty(pass)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
+            return;
+        }
+        showProgressDialog("Please wait...");
+        AdminModel adminModel = new AdminModel();
+        adminModel.readAdminPassFromFirebase(pass, this);
+    }
+
     // reset password for email function
     private void resetPassword() {
         this.mEmail = this.mEmailReset.getText().toString().trim();
@@ -209,7 +221,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
         }
 
         showProgressDialog("Please wait...");
-        mUsers.checkUser(RESET, this.mEmail, SignInActivity.this);
+        mAgentModel.readAgentFromFirebase(this,RESET, this.mEmail, SignInActivity.this);
     }
 
 
@@ -228,8 +240,8 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
             return;
         }
 
-        if (this.mPass.length() <= 6) {
-            Toast.makeText(getApplicationContext(), "Password need to be at least 6 characters", Toast.LENGTH_SHORT).show();
+        if (this.mPass.length() <= MIN_PASS_LEN) {
+            Toast.makeText(getApplicationContext(), "Password need to be at least "+MIN_PASS_LEN+" characters", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -242,7 +254,7 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                            mUsers.checkUser(SIGN, user.getEmail(), SignInActivity.this);
+                            mAgentModel.readAgentFromFirebase(SignInActivity.this,SIGN, user.getEmail(), SignInActivity.this);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -255,51 +267,9 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
 
     // sign up a user to the app
     private void userSignUp() {
-        this.mEmail = this.mEmailEditText.getText().toString().trim();
-        this.mPass = this.mPasswordEditText.getText().toString().trim();
-
-
-        if (TextUtils.isEmpty(this.mEmail)) {
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(this.mPass)) {
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (this.mPass.length() <= 6) {
-            Toast.makeText(this, "Password need to be at least 6 characters", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        showProgressDialog("Signing up, please wait...");
-
-        mFirebaseAuth.createUserWithEmailAndPassword(this.mEmail, this.mPass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            sendEmailVerification();
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                        hideProgressDialog();
-                    }
-                });
-    }
-
-    // after user signed up, email verification send
-    private void sendEmailVerification () {
-        this.mCurrentUser = mFirebaseAuth.getCurrentUser();
-        this.mCurrentUser.sendEmailVerification();
-        Toast.makeText(SignInActivity.this, "Email verification sent successfully.", Toast.LENGTH_SHORT).show();
+        mAdminView.setVisibility(View.GONE);
+        startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     // checked if email was verified
@@ -309,7 +279,8 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
             @Override
             public void onSuccess(Object o) {
                 if (mCurrentUser.isEmailVerified()) {
-                    mUsers.writeUserToDataBase(mCurrentUser.getUid(), mCurrentUser.getEmail());
+                    AgentModel agent = new AgentModel().readLocalObj(SignInActivity.this);
+                    agent.saveAgentToFirebase(mCurrentUser.getUid());
                 }
                 else {
                     Toast.makeText(SignInActivity.this, "Email verification failed.", Toast.LENGTH_SHORT).show();
@@ -319,16 +290,37 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     }
 
     // show progress dialog
-    private void showProgressDialog(String message) {
-        mProgressDialog.setMessage(message);
-        mProgressDialog.show();
+    private void showProgressDialog(final String msg) {
+        UtilitiesFunc.hideKeyboard(this);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mLoadingViewText.setText(msg);
+
+                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+                mLoadingView.startAnimation(aniFade);
+                mLoadingView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     // hide progress dialog
     private void hideProgressDialog() {
-        mProgressDialog.dismiss();
-    }
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
+                mLoadingView.startAnimation(aniFade);
+                mLoadingView.setVisibility(View.GONE);
+
+                mLoadingViewText.setText("");
+            }
+        });
+
+
+    }
     private void disableMainButtons(){
         this.mSignInBtn.setClickable(false);
         this.mSignUpBtn.setClickable(false);
@@ -348,9 +340,10 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
     @Override
     public void checkUserCallback(boolean result) {
         if (result) {
-            mSharedPreferences.saveData(IS_FIRST_INSTALLATION, KEY);
-            mSharedPreferences.saveData(this.mEmail, "Email");
-            mSharedPreferences.saveData("true", "SignedIn");
+            mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),IS_FIRST_INSTALLATION, KEY);
+            mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),this.mEmail, "Email");
+            mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),"true", "SignedIn");
+            mAgentModel.setAgentLocalDataByKeyAndValue(getApplicationContext(),mFirebaseAuth.getCurrentUser().getUid(), "UID");
 
             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
             startActivity(intent);
@@ -383,7 +376,11 @@ public class SignInActivity extends AppCompatActivity implements CheckUserCallba
 
     @Override
     public void checkAdminPasswordCallback(boolean result) {
-
+        hideProgressDialog();
+        if (result)
+            userSignUp();
+        else
+            Toast.makeText(SignInActivity.this, "Admin's password is not correct", Toast.LENGTH_SHORT).show();
     }
 }
 

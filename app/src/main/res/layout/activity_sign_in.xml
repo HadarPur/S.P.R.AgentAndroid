@@ -18,19 +18,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingRight="20dp"
-            android:paddingLeft="20dp">
-            <TextView
-                android:layout_width="60pt"
+            android:paddingLeft="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="18pt"
                 android:layout_height="18pt"
-                android:textSize="10pt"
-                android:textStyle="bold"
-                android:text="Email: "/>
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_email" />
 
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="18pt"
                 android:textSize="6pt"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:background="@drawable/edittext_border"
                 android:inputType="textEmailAddress"
                 android:hint="Enter email address" />
         </LinearLayout>
@@ -41,20 +45,24 @@
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
             android:paddingBottom="20dp"
-            android:paddingTop="20dp">
-            <TextView
-                android:layout_width="60pt"
+            android:paddingTop="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="18pt"
                 android:layout_height="18pt"
-                android:textSize="10pt"
-                android:textStyle="bold"
-                android:text="Password: "/>
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_lock" />
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="18pt"
                 android:textSize="6pt"
-                android:gravity="left"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:gravity="center_vertical|left"
+                android:background="@drawable/edittext_border"
                 android:inputType="textPassword"
                 android:hint="Enter password" />
         </LinearLayout>
@@ -88,6 +96,22 @@
             android:background="@android:color/transparent"
             android:gravity="center"/>
     </LinearLayout>
+
+    <include
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        layout="@layout/alert_view"
+        android:layout_height="250dp"
+        android:visibility="invisible"
+        android:layout_width="350dp"/>
+
+    <include
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        layout="@layout/progress_dialog_view"
+        android:layout_height="180dp"
+        android:visibility="invisible"
+        android:layout_width="350dp"/>
 
     <include
         android:layout_centerHorizontal="true"

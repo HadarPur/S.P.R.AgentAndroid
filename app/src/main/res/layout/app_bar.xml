@@ -16,8 +16,10 @@
             android:layout_width="15pt"
             android:layout_height="20pt"
             android:src="@drawable/ic_back"
+            android:visibility="gone"
             android:background="@android:color/transparent"
             android:clickable="false"/>
+
         <ImageView
             android:layout_width="60pt"
             android:layout_height="match_parent"
@@ -31,10 +33,28 @@
         android:paddingRight="10dp">
 
         <ImageButton
+            android:id="@+id/add_report"
+            android:layout_width="20pt"
+            android:layout_height="20pt"
+            android:src="@drawable/ic_add_circle"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            android:clickable="false"/>
+
+        <ImageButton
+            android:id="@+id/info"
+            android:layout_width="20pt"
+            android:layout_height="20pt"
+            android:src="@drawable/ic_info"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            android:clickable="false"/>
+
+        <ImageButton
             android:id="@+id/video"
             android:layout_width="20pt"
             android:layout_height="20pt"
-            android:src="@drawable/ic_videocam"
+            android:src="@drawable/ic_videocam_grey"
             android:background="@android:color/transparent"
             android:visibility="gone"
             android:clickable="false"/>
@@ -43,7 +63,7 @@
             android:id="@+id/phone"
             android:layout_width="20pt"
             android:layout_height="20pt"
-            android:src="@drawable/ic_phone"
+            android:src="@drawable/ic_phone_grey"
             android:visibility="gone"
             android:clickable="false"
             android:background="@android:color/transparent" />

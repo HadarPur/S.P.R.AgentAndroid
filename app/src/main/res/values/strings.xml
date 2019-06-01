@@ -1,3 +1,70 @@
 <resources>
     <string name="app_name">SPR Agent</string>
+    <string name="google_api">AIzaSyDQkp1Sh07b3cEKV2ZBdwog8mIUx8CaD2Q</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+    <string name="default_notification_channel_id">SPR_Chanel_2018</string>
+
+    <string-array name="cities_array">
+        <item>Afula</item>
+        <item>Arad</item>
+        <item>Ashdod</item>
+        <item>Ashkelon</item>
+        <item>Bat Yam</item>
+        <item>Beer Sheba‎</item>
+        <item>Beit Shean</item>
+        <item>Beit Shemesh</item>
+        <item>Bnei Brak‎</item>
+        <item>Dimona‎</item>
+        <item>Eilat‎</item>
+        <item>Elad‎</item>
+        <item>Givat Shmuel</item>
+        <item>Givatayim‎</item>
+        <item>Hadera‎</item>
+        <item>Haifa‎</item>
+        <item>Hertsliya</item>
+        <item>Hod HaSharon‎</item>
+        <item>Holon‎</item>
+        <item>Jerusalem‎</item>
+        <item>Karmiel</item>
+        <item>Kfar Saba</item>
+        <item>Kfar Yona</item>
+        <item>Kiryat Ata</item>
+        <item>Kiryat Bialik</item>
+        <item>Kiryat Malakhi</item>
+        <item>Kiryat Motzkin</item>
+        <item>Kiryat Ono</item>
+        <item>Kiryat Shmona</item>
+        <item>Kiryat Yam</item>
+        <item>Maalot Tarshiha</item>
+        <item>Mevaseret Zion</item>
+        <item>Migdal HaEmek</item>
+        <item>Modiin-Maccabim-Reut‎</item>
+        <item>Nahariya</item>
+        <item>Natsrat Ilit</item>
+        <item>Nazareth</item>
+        <item>Nesher</item>
+        <item>Ness Ziona‎</item>
+        <item>Netanya‎</item>
+        <item>Netivot</item>
+        <item>Ofakim</item>
+        <item>Or Akiva</item>
+        <item>Or Yehuda</item>
+        <item>Petah Tikva</item>
+        <item>Raanana</item>
+        <item>Ramat Gan</item>
+        <item>Ramla</item>
+        <item>Rehovot‎</item>
+        <item>Rishon LeTsiyon</item>
+        <item>Rosh HaAyin</item>
+        <item>Sderot‎</item>
+        <item>Tel Aviv‎</item>
+        <item>Tverya</item>
+        <item>Tirat Carmel</item>
+        <item>Yavne</item>
+        <item>Yahud Monoson</item>
+        <item>Yokneam Illit</item>
+    </string-array>
+
+
 </resources>

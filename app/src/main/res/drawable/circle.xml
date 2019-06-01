@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<item android:drawable="@drawable/splash" />
+<item>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    </shape>
+</item>
+
+</layer-list>

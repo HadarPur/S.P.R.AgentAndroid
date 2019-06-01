@@ -7,26 +7,27 @@ import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import com.example.hpur.spragent.Logic.Models.AgentModel;
 import com.example.hpur.spragent.R;
-import com.example.hpur.spragent.Storage.SharedPreferencesStorage;
 
 public class SplashActivity extends AppCompatActivity {
     private static final String KEY = "connect", IS_FIRST_INSTALLATION = "false";
 
     public static int SPLASH_OUT=2000;
-    private ImageView loading;
-    public RotateAnimation rotate;
-    private SharedPreferencesStorage mSharedPreferences;
+    private ImageView mLoading;
+    private RotateAnimation mRotate;
+    private AgentModel mAgentModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mSharedPreferences = new SharedPreferencesStorage(getApplicationContext());
 
-        rotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF,
+        this.mAgentModel = new AgentModel();
+
+        mRotate = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF,
                 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(SPLASH_OUT/2);
+        mRotate.setDuration(SPLASH_OUT/2);
 
         findViews();
 
@@ -34,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
 
     // find all views from xml by id
     private void findViews() {
-        loading = findViewById(R.id.imageView);
+        mLoading = findViewById(R.id.imageView);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mSharedPreferences.readData("SignedIn").equals("") || mSharedPreferences.readData("SignedIn").equals("false")) {
+                if (mAgentModel.getAgentLocalDataByKey(getApplicationContext(), "SignedIn").equals("") || mAgentModel.getAgentLocalDataByKey(getApplicationContext(), "SignedIn").equals("false")) {
                     Intent intent = new Intent(SplashActivity.this, SignInActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -60,7 +61,6 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
         }, SPLASH_OUT);
-        loading.startAnimation(rotate);
+        mLoading.startAnimation(mRotate);
     }
-
 }

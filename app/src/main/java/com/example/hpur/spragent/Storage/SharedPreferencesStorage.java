@@ -3,7 +3,7 @@ package com.example.hpur.spragent.Storage;
 import android.content.Context;
 
 public class SharedPreferencesStorage {
-    private final String FILE = "SPR";
+    private final String FILE = "SPRAgent";
     private final Context mContext;
 
     // c'tor
